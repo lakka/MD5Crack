@@ -28,15 +28,15 @@ public class Reductor {
      * @return plaintext generated from hash
      */
     public String reduce(byte[] hash, int functionNr) {
-
-        String returnValue = "";
+        StringBuilder sb = new StringBuilder(pwLength);
         for (byte b : hash) {
-            // unique results for different reduction functions
+            // unique results for each reduction function
             b ^= functionNr;
             
-            returnValue += charset.charAt(b%charset.length());
+            sb.append(charset.charAt(Math.abs(b%charset.length())));
         }
-        returnValue = returnValue.substring(0,pwLength);
-        return returnValue;
+        
+        return sb.substring(0,pwLength);
+        
     }
 }
