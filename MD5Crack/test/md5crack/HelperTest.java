@@ -2,6 +2,7 @@
 
 package md5crack;
 
+import helpers.CommonHelper;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,14 +15,14 @@ import static org.junit.Assert.*;
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class HelperTest {
-    Helper helper;
+    CommonHelper helper;
 
     public HelperTest() {
     }
 
     @Before
     public void setUp() {
-        helper = new Helper();
+        helper = new CommonHelper();
     }
 
     
