@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package md5crack;
-import java.security.MessageDigest;
 
 /**
  * A class for generating rainbow tables and saving them into a file.
