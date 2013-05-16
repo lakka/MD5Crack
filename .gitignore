@@ -1,4 +1,7 @@
 *.tbl
+*.aux
+*.out
+*.synctex.gz
 
 #################
 ## Eclipse

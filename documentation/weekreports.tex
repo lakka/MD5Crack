@@ -1,0 +1,21 @@
+\documentclass[a4paper, 11pt, finnish]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+
+\title{Weekly reports}
+\author{Lauri Kangassalo}
+
+\begin{document}
+  \maketitle
+\section*{Week 1}
+During this week I was mostly studying the basic principles of hash cracking and rainbow tables. I have never done anything like this before, but I think I now handle the basic principles of how rainbow tables work.
+
+It is still unclear to me how to optimize my code for cracking hashes, since I don't know how exactly JVM handles memory allocations and such. For example I'm uncertain wether I should use byte arrays in my code, or convert those arrays into long values. I'm sure that as my code progresses I will find an answer to these problems.
+
+I started coding the very heart of the algorithm, the reduction function. It seems to be working correctly, but as stated before, I am uncertain whether it's efficient enough. I also managed to code a class for generating rainbow tables and saving them into a file.
+
+Next I'm going to proceed to the actual hash cracking part.
+
+\end{document}
