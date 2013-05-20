@@ -13,8 +13,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm1234567890", 5, 128000, 1000);
-        tc.createTable();
+//        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm1234567890", 5, 128000, 1000);
+//        tc.createTable();
+        
+        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm1234567890", 5, 128000, 1000, "1368728915703.tbl");
+        cracker.crackHash("kakakakakakakakakakakakakakakaka");
         
 //        CommonHelper helper = new CommonHelper();
 //        
