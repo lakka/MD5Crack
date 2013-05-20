@@ -6,6 +6,7 @@ import helpers.Reductor;
 import java.io.DataInputStream;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  *
@@ -32,12 +33,15 @@ public class MD5Crack {
         CommonHelper helper = new CommonHelper();
         Reductor reductor = new Reductor(charset, pwLength);
         MessageDigest md = helper.getMD5digester();
+        HashSet<byte[]> foundEndpoints = new HashSet<byte[]>();
         
         System.out.print("Reading table file... ");
         DataInputStream dis = file.openFile(filename);
         HashMap<byte[], byte[]> table = file.readTable(dis, pwLength);
         System.out.println("done.");
         System.out.println("Table size: " + table.size());
+        
+        
 
         byte[] hash = hashString.getBytes();
 
@@ -49,10 +53,24 @@ public class MD5Crack {
             }
             possibleEndpoint = reductor.reduce(possibleEndpoint, chainLength - 1);
             if (table.containsKey(possibleEndpoint)) {
-                System.out.println("Endpoint found.");
-                return true;
+                foundEndpoints.add(possibleEndpoint);
             }
         }
+        System.out.println("Endpoints found: "+foundEndpoints.size());
+        
+        for (byte[] endpoint : foundEndpoints) {
+            byte[] startingPoint = table.get(endpoint);
+            byte[] possibleHash;
+            for (int i = 0; i < chainLength; i++) {
+                possibleHash = md.digest(startingPoint);
+                if(helper.equalBytes(hash, possibleHash)) {
+                    System.out.println("Hash cracked: "+ startingPoint);
+                    return true;
+                }
+                startingPoint = reductor.reduce(possibleHash, i);
+            }
+        }
+        
 
         return false;
     }
