@@ -16,7 +16,8 @@ import static org.junit.Assert.*;
 public class ReductorTest {
     private Reductor rf;
     private String charset;
-    private int pwLength;
+    private int minPwLength;
+    private int maxPwLength;
     private byte[] testHash;
     
     public ReductorTest() {
@@ -26,14 +27,21 @@ public class ReductorTest {
     @Before
     public void setUp() {
         charset = "abc";
-        pwLength = 3;
+        minPwLength = 3;
+        maxPwLength = 6;
         testHash = "0123456789qwertyuiopasdfghjklzxc".getBytes();
-        rf = new Reductor(charset,pwLength);
+        rf = new Reductor(charset,minPwLength,maxPwLength);
     }
 
     @Test
     public void reduceReturnsCorrectLength() {
-        assertEquals(pwLength,rf.reduce(testHash, 1).length);
+        assertEquals(minPwLength,rf.reduce(testHash, 1).length);
+    }
+    @Test
+    public void reduceReturnsCorrectLength2() {
+        for (int i = 0; i < 100; i++) {
+            assertTrue(minPwLength <= rf.reduce(testHash,i).length && maxPwLength >= rf.reduce(testHash, i).length);
+        }
     }
     
     @Test

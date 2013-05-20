@@ -1,7 +1,8 @@
 package md5crack;
 
-import helpers.Reductor;
 import helpers.CommonHelper;
+import helpers.Reductor;
+import java.util.Random;
 
 /**
  *
@@ -13,21 +14,21 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm1234567890", 5, 128000, 1000);
-//        tc.createTable();
+        TableCreator tc = new TableCreator("kalt", 5,6, 1280, 1000);
+        tc.createTable();
         
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm1234567890", 5, 128000, 1000, "1368728915703.tbl");
-        cracker.crackHash("kakakakakakakakakakakakakakakaka");
+//        MD5Crack cracker = new MD5Crack("kalt", 5, 1280, 1000, "1369072346056.tbl");
+//        cracker.crackHash("e920fe90c96a5588df35ec7604b93641");
         
 //        CommonHelper helper = new CommonHelper();
-//        
+////        
 //        // reductor testing
-//        Reductor rf = new Reductor("abcd0123",5);
+//        Reductor rf = new Reductor("abcd0123",3,4);
 //        byte[] hash = "qwertyuiopasdfghjklzxc0123456789".getBytes();
 //        for (int i = 0; i < 31; i++) {
 //            // change one byte in hash
 //            hash[i] ^= hash[i+1];
-//            System.out.println(helper.bytesToString(rf.reduce(hash,1),"abcd0123"));
+//            System.out.println(helper.bytesToString(rf.reduce(hash,i),"abcd0123"));
 //        }
     }
 }

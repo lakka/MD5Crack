@@ -15,14 +15,16 @@ import java.util.HashSet;
 public class MD5Crack {
 
     private String charset;
-    private int pwLength;
+    private int minPwLength;
+    private int maxPwLength;
     private int chainsPerTable;
     private int chainLength;
     private String filename;
 
-    public MD5Crack(String charset, int pwLength, int chainsPerTable, int chainLength, String filename) {
+    public MD5Crack(String charset,int minPwLength, int maxPwLength, int chainsPerTable, int chainLength, String filename) {
         this.charset = charset;
-        this.pwLength = pwLength;
+        this.minPwLength = minPwLength;
+        this.maxPwLength = maxPwLength;
         this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
         this.filename = filename;
@@ -31,13 +33,13 @@ public class MD5Crack {
     public boolean crackHash(String hashString) {
         FileHelper file = new FileHelper();
         CommonHelper helper = new CommonHelper();
-        Reductor reductor = new Reductor(charset, pwLength);
+        Reductor reductor = new Reductor(charset, minPwLength,maxPwLength);
         MessageDigest md = helper.getMD5digester();
         HashSet<byte[]> foundEndpoints = new HashSet<byte[]>();
         
         System.out.print("Reading table file... ");
         DataInputStream dis = file.openFile(filename);
-        HashMap<byte[], byte[]> table = file.readTable(dis, pwLength);
+        HashMap<byte[], byte[]> table = file.readTable(dis, maxPwLength);
         System.out.println("done.");
         System.out.println("Table size: " + table.size());
         
@@ -52,26 +54,26 @@ public class MD5Crack {
                 possibleEndpoint = md.digest(possibleEndpoint);
             }
             possibleEndpoint = reductor.reduce(possibleEndpoint, chainLength - 1);
+
             if (table.containsKey(possibleEndpoint)) {
                 foundEndpoints.add(possibleEndpoint);
             }
+            
         }
         System.out.println("Endpoints found: "+foundEndpoints.size());
         
         for (byte[] endpoint : foundEndpoints) {
-            byte[] startingPoint = table.get(endpoint);
-            byte[] possibleHash;
+            byte[] currentPlaintext = table.get(endpoint);
+            byte[] currentHash;
             for (int i = 0; i < chainLength; i++) {
-                possibleHash = md.digest(startingPoint);
-                if(helper.equalBytes(hash, possibleHash)) {
-                    System.out.println("Hash cracked: "+ startingPoint);
+                currentHash = md.digest(currentPlaintext);
+                if(helper.equalBytes(hash, currentHash)) {
+                    System.out.println("Hash cracked: "+ currentPlaintext);
                     return true;
                 }
-                startingPoint = reductor.reduce(possibleHash, i);
+                currentPlaintext = reductor.reduce(currentHash, i);
             }
         }
-        
-
         return false;
     }
 }

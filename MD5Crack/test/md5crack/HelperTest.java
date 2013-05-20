@@ -46,6 +46,27 @@ public class HelperTest {
         
     }
     
+    @Test
+    public void equalBytesReturnFalseOnArraysOfDifferentLength() {
+        byte[] bytes1 = {1,2,3};
+        byte[] bytes2 = {1,2};
+        assertFalse(helper.equalBytes(bytes1, bytes2));
+    }
+    
+    @Test
+    public void equalBytesReturnsTrue() {
+        byte[] bytes1 = {1,2,3};
+        byte[] bytes2 = {1,2,3};
+        assertTrue(helper.equalBytes(bytes1, bytes2));
+    }
+    
+    @Test
+    public void equalBytesReturnsFalse() {
+        byte[] bytes1 = {1,2,3};
+        byte[] bytes2 = {2,2,3};
+        assertFalse(helper.equalBytes(bytes1, bytes2));
+    }
+    
 
 
 }
