@@ -14,8 +14,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TableCreator tc = new TableCreator("kalt", 5,6, 1280, 1000);
-        tc.createTable();
+        UI ui = new UI();
+        ui.start();
+//        TableCreator tc = new TableCreator("kalt", 4,6, 12800, 1000);
+//        tc.createTable();
         
 //        MD5Crack cracker = new MD5Crack("kalt", 5, 1280, 1000, "1369072346056.tbl");
 //        cracker.crackHash("e920fe90c96a5588df35ec7604b93641");

@@ -3,6 +3,7 @@ package md5crack;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;
+import helpers.UIHelper;
 import java.io.DataOutputStream;
 import java.security.*;
 import java.util.Random;
@@ -19,7 +20,6 @@ public class TableCreator {
     private int maxPwLength;
     private int chainsPerTable;
     private int chainLength;
-    private long keyspace;
 
     /**
      * Initializes a class for creating rainbow tables.
@@ -36,9 +36,7 @@ public class TableCreator {
         this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
 
-        for (int i = minPwLength; i <= maxPwLength; i++) {
-            this.keyspace += (long) Math.pow(charset.length(), i);
-        }
+        
     }
 
     /**
@@ -52,6 +50,7 @@ public class TableCreator {
         Reductor rf = new Reductor(charset, minPwLength, maxPwLength);
         FileHelper file = new FileHelper();
         CommonHelper helper = new CommonHelper();
+        UIHelper uihelper = new UIHelper();
 
         MessageDigest md = helper.getMD5digester();
         if (md == null) {
@@ -59,17 +58,18 @@ public class TableCreator {
         }
 
 
-        DataOutputStream dos = file.createTableFile();
+        DataOutputStream dos = file.createTableFile(charset.length(),minPwLength,maxPwLength,chainsPerTable,chainLength);
         if (dos == null) {
             return false;
         }
 
 
-        System.out.println("Starting table creation. Keyspace is " + keyspace + ".");
+        uihelper.printTableGenerationStartStats();
 
-        byte[] startingPoint = new byte[maxPwLength];
+        
         byte[] endpoint = new byte[maxPwLength];
         for (int i = 0; i < chainsPerTable; i++) {
+            byte[] startingPoint = new byte[i%(maxPwLength-minPwLength+1)+minPwLength];
             createRandomStartingPoint(random, startingPoint);
 
             byte[] hash;
@@ -83,11 +83,11 @@ public class TableCreator {
 
             // print progress
             if (i != 0 && i % (chainsPerTable / 10) == 0) {
-                System.out.println(i + "/" + chainsPerTable);
+                uihelper.printTableGenerationProgress(i,chainsPerTable);
             }
         }
 
-        System.out.println(chainsPerTable + "/" + chainsPerTable);
+        uihelper.printTableGenerationProgress(chainsPerTable,chainsPerTable);
         file.closeFile(dos);
         return true;
     }

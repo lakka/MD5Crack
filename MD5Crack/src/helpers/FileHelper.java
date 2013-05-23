@@ -20,9 +20,9 @@ public class FileHelper {
      *
      * @return null, if table creation failed
      */
-    public DataOutputStream createTableFile() {
+    public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
-        File file = new File(System.currentTimeMillis() + ".tbl");
+        File file = new File(charsetLength+"_"+minPwLength+"-"+maxPwLength+"_"+chainsPerTable+"_"+chainLength+"_"+ (""+System.currentTimeMillis()).substring(4) + ".tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));
@@ -102,4 +102,5 @@ public class FileHelper {
 
 
     }
+
 }

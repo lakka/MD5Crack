@@ -48,4 +48,12 @@ public class CommonHelper {
         }
         return md;
     }
+    
+    public long calculateKeyspace(String charset, int minPwLength,int maxPwLength) {
+        long keyspace = 0;
+        for (int i = minPwLength; i <= maxPwLength; i++) {
+            keyspace += (long) Math.pow(charset.length(), i);
+        }
+        return keyspace;
+    }
 }
