@@ -69,4 +69,27 @@ public class CommonHelper {
         }
         return keyspace;
     }
+    
+        /**
+         * Calculates a prime number with a minimum value of size/2.
+         * 
+         * @param size 
+         * @return a prime number
+         */
+        public int calculatePrime(int size) {
+        int i = size/2;
+        while (true) {
+            boolean isPrime = true;
+            for (int j = 2; j < i; j++) {
+                if(i%j==0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) {
+                return i;
+            }
+            i++;
+        }
+    }
 }
