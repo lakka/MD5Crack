@@ -95,6 +95,7 @@ public class UI {
 
     /**
      * Queries the user for an integer and checks that input really is one.
+     * 
      * @param message message to print
      * @return an integer
      */
@@ -115,6 +116,11 @@ public class UI {
         return inputInteger;
     }
 
+    /**
+     * Query the user for which mode to run the program in.
+     * 
+     * @return 1 for generating tables, 2 for cracking hashes
+     */
     private int askMode() {
         System.out.println("Select mode:");
         System.out.println("1) Generate a new rainbow table");
@@ -131,7 +137,7 @@ public class UI {
     }
 
     private String askFilename() {
-        System.out.print("Rainbow table to load:");
+        System.out.print("Rainbow table to load: ");
         String input = scanner.nextLine();
         if (input.isEmpty()) {
             return null;
@@ -140,6 +146,10 @@ public class UI {
 
     }
 
+    /**
+     * Queries user for a hash until user gives a legitimate one.
+     * @return MD5-hash
+     */
     private String askHash() {
         String hash = null;
         while (hash == null || hash.length() != 32) {

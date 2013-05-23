@@ -14,10 +14,10 @@ import static org.junit.Assert.*;
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-public class HelperTest {
+public class CommonHelperTest {
     CommonHelper helper;
 
-    public HelperTest() {
+    public CommonHelperTest() {
     }
 
     @Before

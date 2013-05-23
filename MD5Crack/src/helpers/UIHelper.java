@@ -26,7 +26,7 @@ public class UIHelper {
     }
     
     public void startFileRead() {
-        System.out.print("Reading the table file...");
+        System.out.print("Reading the table file... ");
     }
     public void done() {
         System.out.println("done.");

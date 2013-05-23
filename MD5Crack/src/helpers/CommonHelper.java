@@ -25,6 +25,12 @@ public class CommonHelper {
         return sb.toString();
     }
     
+    /**
+     * Check if two byte-arrays have equal content.
+     * @param bytes1 first byte array
+     * @param bytes2 second byte array
+     * @return true if the arrays are equal
+     */
     public boolean equalBytes(byte[] bytes1, byte[] bytes2) {
         if(bytes1.length != bytes2.length) return false;
         for (int i = 0; i < bytes1.length; i++) {
@@ -49,6 +55,13 @@ public class CommonHelper {
         return md;
     }
     
+    /**
+     * Calculates the keyspace size.
+     * @param charset
+     * @param minPwLength
+     * @param maxPwLength
+     * @return 
+     */
     public long calculateKeyspace(String charset, int minPwLength,int maxPwLength) {
         long keyspace = 0;
         for (int i = minPwLength; i <= maxPwLength; i++) {

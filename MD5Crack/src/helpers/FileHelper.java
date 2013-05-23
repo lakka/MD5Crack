@@ -63,6 +63,12 @@ public class FileHelper {
         }
     }
 
+    /**
+     * Opens a file for reading.
+     * 
+     * @param filename file to open
+     * @return DataInputStream handle for file
+     */
     public DataInputStream openFile(String filename) {
         File file = new File(filename);
         DataInputStream dis;
@@ -76,6 +82,12 @@ public class FileHelper {
         return dis;
     }
 
+    /**
+     * Reads a previously opened table file into a hashmap.
+     * @param dis handle for file
+     * @param pwLength password length
+     * @return rainbow table
+     */
     public HashMap<byte[], byte[]> readTable(DataInputStream dis, int pwLength) {
 
         HashMap<byte[], byte[]> table = new HashMap<byte[], byte[]>();

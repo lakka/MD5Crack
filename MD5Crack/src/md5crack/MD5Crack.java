@@ -50,6 +50,7 @@ public class MD5Crack {
 
         byte[] hash = hashString.getBytes();
 
+        // reduce the hash until a known endpoint is found
         for (int i = chainLength - 1; i >= 0; i--) {
             byte[] possibleEndpoint = hash;
             for (int j = i; j < chainLength - 1; j++) {
@@ -58,6 +59,7 @@ public class MD5Crack {
             }
             possibleEndpoint = reductor.reduce(possibleEndpoint, chainLength - 1);
 
+            // add the endpoint to a hashset for further analysis
             if (table.containsKey(possibleEndpoint)) {
                 foundEndpoints.add(possibleEndpoint);
             }
@@ -65,13 +67,14 @@ public class MD5Crack {
         }
         uihelper.printEndpointCount(foundEndpoints.size());
         
-        // loop through endpoints to eliminate false alarms
+        // loop through matching endpoints to eliminate false alarms
             for (byte[] endpoint : foundEndpoints) {
             byte[] currentPlaintext = table.get(endpoint);
             byte[] currentHash;
             for (int i = 0; i < chainLength; i++) {
                 currentHash = md.digest(currentPlaintext);
                 if(helper.equalBytes(hash, currentHash)) {
+                    // found a matching plaintext for hash
                     uihelper.hashCracked(helper.bytesToString(currentPlaintext, charset));
                     return true;
                 }

@@ -18,4 +18,13 @@ I started coding the very heart of the algorithm, the reduction function. It see
 
 Next I'm going to proceed to the actual hash cracking part.
 
+\section*{Week 2}
+I started this week by coding the class that cracks the hashes \emph{(MD5Crack)}, and got it almost done. However, I discovered that I can't proceed in this part of my program unless I create my own implementation of hashmap/hashset first. Another option would be to create a new class for byte arrays, and I'm worried that it could affect performance, since byte arrays are in such a great role in my software. Besides, I feel that it would be kind of an overkill to create such a class, since all I would need it for would be an equals and a hashcode method.
+
+Since I found myself in a temporary dead-end, for not being able to actually test the password cracking, I decided to code some secondary parts of the program. Firstly, the passwords are no longer fixed in length, for example the user could now choose to include password of lengths 3 to 9 to the rainbow table. This feature is still somewhat buggy, as the program doesn't read the passwords from the rainbow table file correctly. I will get back to this problem as soon as I can get more pressing problems in the code in order. Secondly, I created a simple user interface for the program, to aid in performance testing. Also, all printing is now handled in classes \emph{UIHelper} and \emph{UI}.
+
+Performance has been tested by hand from the very start of this project. Sadly, I haven't been able to test the hash cracking part, since it doesn't work yet. However, in my experience the table creator \emph{TableCreator} class's performance is sufficient. I have been creating rainbow tables of various sizes, but haven't yet tried to run my program on large enough parameters, since creating a really working rainbow table will take a lot of time and disk space. I will get back to this topic as soon as I can rely on the reading of rainbow table files, so that I don't waste my time creating a table file I can't open in the future.
+
+During this week I also started rereading the materials from Data Structures -course regarding hashmaps. I have a some sort of idea of how it should be implemented, but I've yet to decide on the technical details (what kind of hashing function will I be using, how do I handle collisions etc). From now on I'll be mostly concentrating on the hashmap implementation.
+
 \end{document}
