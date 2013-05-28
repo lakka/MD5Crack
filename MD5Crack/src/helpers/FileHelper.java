@@ -1,5 +1,6 @@
 package helpers;
 
+import HashTable.Bytes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -22,7 +23,8 @@ public class FileHelper {
      */
     public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
-        File file = new File(charsetLength+"_"+minPwLength+"-"+maxPwLength+"_"+chainsPerTable+"_"+chainLength+"_"+ (""+System.currentTimeMillis()).substring(4) + ".tbl");
+//        File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+"-"+ (""+System.currentTimeMillis()).substring(4) + ".tbl");
+        File file = new File("yksi.tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));
@@ -88,20 +90,25 @@ public class FileHelper {
      * @param pwLength password length
      * @return rainbow table
      */
-    public HashMap<byte[], byte[]> readTable(DataInputStream dis, int pwLength) {
+    public HashMap<Bytes, Bytes> readTable(DataInputStream dis, int minPwLength, int maxPwLength) {
 
-        HashMap<byte[], byte[]> table = new HashMap<byte[], byte[]>();
-
+        HashMap<Bytes, Bytes> table = new HashMap<Bytes, Bytes>();
         int i = 0;
+        
         while (true) {
+            int pwLength = i % (maxPwLength - minPwLength + 1) + minPwLength;
             byte[] startingPoint = new byte[pwLength];
             byte[] endpoint = new byte[pwLength];
             try {
+                
                 dis.readFully(startingPoint);
                 dis.readFully(endpoint);
-                table.put(endpoint, startingPoint);
-
+                Bytes bytese = new Bytes(endpoint);
+                Bytes bytess = new Bytes(startingPoint);
+                table.put(bytese, bytess);
+                i++;
             } catch (EOFException e) {
+                System.out.println("\nRead " + i + " lines.");
                 return table;
             } catch (Exception e) {
                 System.out.println("Error reading table file.");

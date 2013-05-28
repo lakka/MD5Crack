@@ -1,11 +1,13 @@
 package md5crack;
 
+import HashTable.Bytes;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;
 import helpers.UIHelper;
 import java.io.DataOutputStream;
 import java.security.*;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -36,7 +38,7 @@ public class TableCreator {
         this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
 
-        
+
     }
 
     /**
@@ -51,6 +53,8 @@ public class TableCreator {
         FileHelper file = new FileHelper();
         CommonHelper helper = new CommonHelper();
         UIHelper uihelper = new UIHelper();
+        HashSet<Bytes> byteset = new HashSet<>();
+        HashSet<Bytes> hashset = new HashSet<>();
 
         MessageDigest md = helper.getMD5digester();
         if (md == null) {
@@ -58,7 +62,7 @@ public class TableCreator {
         }
 
 
-        DataOutputStream dos = file.createTableFile(charset.length(),minPwLength,maxPwLength,chainsPerTable,chainLength);
+        DataOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
         if (dos == null) {
             return false;
         }
@@ -66,28 +70,44 @@ public class TableCreator {
 
         uihelper.printTableGenerationStartStats();
 
-        
+
         byte[] endpoint = new byte[maxPwLength];
         for (int i = 0; i < chainsPerTable; i++) {
-            byte[] startingPoint = new byte[i%(maxPwLength-minPwLength+1)+minPwLength];
+            byte[] startingPoint = new byte[i % (maxPwLength - minPwLength + 1) + minPwLength];
             createRandomStartingPoint(random, startingPoint);
 
+            byte[] currentEndpoint = startingPoint;
+        
+            int j;
             byte[] hash;
             // loop each column with different reducing function
-            for (int j = 0; j < chainLength; j++) {
-                hash = md.digest(startingPoint);
-                endpoint = rf.reduce(hash, j);
+            for (j = 0; j < chainLength; j++) {
+                hash = md.digest(currentEndpoint);
+                currentEndpoint = rf.reduce(hash, j);
+                 hashset.add(new Bytes(hash));
             }
+//            hash = md.digest(currentEndpoint);
+//            currentEndpoint = rf.reduce(hash, j, i % (maxPwLength - minPwLength + 1) + minPwLength);
 
-            file.writeToFile(dos, startingPoint, endpoint);
+            byteset.add(new Bytes(currentEndpoint));
+           
+//            for (int a = 0; a < hash.length; a++) {
+//                System.out.print(Integer.toString((hash[a] & 0xff) + 0x100, 16).substring(1));
+//            }
+//            System.out.println(" " + hash.length);
+//            System.out.println(helper.bytesToString(currentEndpoint,charset) + "    " + helper.bytesToString(startingPoint,charset));
+            file.writeToFile(dos, startingPoint, currentEndpoint);
 
             // print progress
             if (i != 0 && i % (chainsPerTable / 10) == 0) {
-                uihelper.printTableGenerationProgress(i,chainsPerTable);
+                uihelper.printTableGenerationProgress(i, chainsPerTable);
             }
         }
 
-        uihelper.printTableGenerationProgress(chainsPerTable,chainsPerTable);
+
+        uihelper.printTableGenerationProgress(chainsPerTable, chainsPerTable);
+        System.out.println("Byteset size: " + byteset.size());
+        System.out.println("Hashset size: " + hashset.size());
         file.closeFile(dos);
         return true;
     }

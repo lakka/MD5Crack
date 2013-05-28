@@ -37,20 +37,25 @@ public class Reductor {
      */
     public byte[] reduce(byte[] hash, int functionNr) {
         // plaintext length from a byte from the hash
-        int pwLength = (hash[hash.length - 1] + functionNr) % (maxPwLength - minPwLength + 1) + minPwLength;
+        int pwLength = (functionNr) % (maxPwLength - minPwLength + 1) + minPwLength;
+        
+        return reduce(hash,functionNr,pwLength);
+        
 
+    }
+
+    public byte[] reduce(byte[] hash, int functionNr, int pwLength) {
         byte[] result = new byte[pwLength];
         for (int i = 0; i < pwLength; i++) {
             // unique results for each reduction function
             hash[i] ^= functionNr;
 
-            result[i] = (byte) (Math.abs(hash[i] % charset.length()));
+            result[i] = (byte)( Math.abs(hash[i]) % charset.length());
 
             // cancel xor
             hash[i] ^= functionNr;
         }
 
         return result;
-
     }
 }

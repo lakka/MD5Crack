@@ -2,6 +2,8 @@
 
 package HashTable;
 
+import java.util.Arrays;
+
 /**
  * A class representing a byte array in a linked list.
  * 
@@ -21,5 +23,31 @@ public class Bytes {
     public byte[] getBytes() {
         return bytes;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for (byte b : bytes) {
+            hash += b;
+        }
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Bytes other = (Bytes) obj;
+        if (!Arrays.equals(this.bytes, other.bytes)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }
