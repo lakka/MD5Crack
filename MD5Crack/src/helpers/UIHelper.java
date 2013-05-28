@@ -26,7 +26,7 @@ public class UIHelper {
     }
     
     public void startFileRead() {
-        System.out.print("Reading the table file... ");
+        System.out.print("Reading table file... ");
     }
     public void done() {
         System.out.println("done.");
@@ -37,7 +37,7 @@ public class UIHelper {
     }
     
     public void printEndpointCount(int endpoints) {
-        System.out.println("Endpoints found: "+endpoints);
+        System.out.println("Possible endpoints: "+endpoints);
     }
 
 }

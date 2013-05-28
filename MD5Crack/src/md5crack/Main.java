@@ -19,13 +19,13 @@ public class Main {
         
         
 //
-        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm", 4,4, 45000, 350);
-        tc.createTable();
+//        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm", 4,4, 45000, 350);
+//        tc.createTable();
         
         CommonHelper helper = new CommonHelper();
         System.out.println("Keyspace: " + helper.calculateKeyspace("qwertyuiopasdfghjklzxcvbnm", 4, 4));
         
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", 4,4, 2000, 350, "yksi.tbl");
+        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", 4,4, 350, "yksi.tbl");
         cracker.crackHash("bf0937fcb05b460e447a0bea7537218a");
         
 //        CommonHelper helper = new CommonHelper();

@@ -12,7 +12,7 @@ public class CommonHelper {
 
     /**
      * Converts an array of bytes into a string according to charset.
-     * 
+     *
      * @param bytes bytes to be converted
      * @param charset charset, to which bytes will be converted
      * @return plaintext of the byte array
@@ -24,25 +24,30 @@ public class CommonHelper {
         }
         return sb.toString();
     }
-    
+
     /**
      * Check if two byte-arrays have equal content.
+     *
      * @param bytes1 first byte array
      * @param bytes2 second byte array
      * @return true if the arrays are equal
      */
     public boolean equalBytes(byte[] bytes1, byte[] bytes2) {
-        if(bytes1.length != bytes2.length) return false;
+        if (bytes1.length != bytes2.length) {
+            return false;
+        }
         for (int i = 0; i < bytes1.length; i++) {
-            if(bytes1[i] != bytes2[i]) return false;
+            if (bytes1[i] != bytes2[i]) {
+                return false;
+            }
         }
         return true;
     }
 
     /**
      * Get Java's built-in MD5-digester.
-     * 
-     * @return 
+     *
+     * @return
      */
     public MessageDigest getMD5digester() {
         MessageDigest md;
@@ -54,34 +59,35 @@ public class CommonHelper {
         }
         return md;
     }
-    
+
     /**
      * Calculates the keyspace size.
+     *
      * @param charset
      * @param minPwLength
      * @param maxPwLength
-     * @return 
+     * @return
      */
-    public long calculateKeyspace(String charset, int minPwLength,int maxPwLength) {
+    public long calculateKeyspace(String charset, int minPwLength, int maxPwLength) {
         long keyspace = 0;
         for (int i = minPwLength; i <= maxPwLength; i++) {
             keyspace += (long) Math.pow(charset.length(), i);
         }
         return keyspace;
     }
-    
-        /**
-         * Calculates a prime number with a minimum value of size/2.
-         * 
-         * @param size 
-         * @return a prime number
-         */
-        public int calculatePrime(int size) {
-        int i = size/2;
+
+    /**
+     * Calculates a prime number with a minimum value of size/2.
+     *
+     * @param size
+     * @return a prime number
+     */
+    public int calculatePrime(int size) {
+        int i = size / 2;
         while (true) {
             boolean isPrime = true;
             for (int j = 2; j < i; j++) {
-                if(i%j==0) {
+                if (i % j == 0) {
                     isPrime = false;
                     break;
                 }
@@ -91,5 +97,21 @@ public class CommonHelper {
             }
             i++;
         }
+    }
+
+    /**
+     * Converts a hexadecimal string to byte array.
+     * 
+     * @param s string to convert
+     * @return a corresponding byte array
+     */
+    public byte[] hexStringToByteArray(String s) {
+        int length = s.length();
+        byte[] data = new byte[length / 2];
+        for (int i = 0; i < length; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i + 1), 16));
+        }
+        return data;
     }
 }

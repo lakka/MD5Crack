@@ -61,17 +61,13 @@ public class TableCreator {
             return false;
         }
 
-
         DataOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
         if (dos == null) {
             return false;
         }
-
-
+        
         uihelper.printTableGenerationStartStats();
 
-
-        byte[] endpoint = new byte[maxPwLength];
         for (int i = 0; i < chainsPerTable; i++) {
             byte[] startingPoint = new byte[i % (maxPwLength - minPwLength + 1) + minPwLength];
             createRandomStartingPoint(random, startingPoint);
@@ -81,21 +77,15 @@ public class TableCreator {
             int j;
             byte[] hash;
             // loop each column with different reducing function
-            for (j = 0; j < chainLength; j++) {
+            for (j = 0; j < chainLength-1; j++) {
                 hash = md.digest(currentEndpoint);
                 currentEndpoint = rf.reduce(hash, j);
                  hashset.add(new Bytes(hash));
             }
-//            hash = md.digest(currentEndpoint);
-//            currentEndpoint = rf.reduce(hash, j, i % (maxPwLength - minPwLength + 1) + minPwLength);
+            hash = md.digest(currentEndpoint);
+            currentEndpoint = rf.reduce(hash, j, i % (maxPwLength - minPwLength + 1) + minPwLength);
 
             byteset.add(new Bytes(currentEndpoint));
-           
-//            for (int a = 0; a < hash.length; a++) {
-//                System.out.print(Integer.toString((hash[a] & 0xff) + 0x100, 16).substring(1));
-//            }
-//            System.out.println(" " + hash.length);
-//            System.out.println(helper.bytesToString(currentEndpoint,charset) + "    " + helper.bytesToString(startingPoint,charset));
             file.writeToFile(dos, startingPoint, currentEndpoint);
 
             // print progress
@@ -103,7 +93,6 @@ public class TableCreator {
                 uihelper.printTableGenerationProgress(i, chainsPerTable);
             }
         }
-
 
         uihelper.printTableGenerationProgress(chainsPerTable, chainsPerTable);
         System.out.println("Byteset size: " + byteset.size());

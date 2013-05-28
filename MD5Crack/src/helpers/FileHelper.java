@@ -108,7 +108,7 @@ public class FileHelper {
                 table.put(bytese, bytess);
                 i++;
             } catch (EOFException e) {
-                System.out.println("\nRead " + i + " lines.");
+                System.out.println("read " + i + " lines.");
                 return table;
             } catch (Exception e) {
                 System.out.println("Error reading table file.");

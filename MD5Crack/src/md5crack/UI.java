@@ -43,7 +43,7 @@ public class UI {
         } else if (mode == 2) {
             System.out.println("Enter hash to start cracking, or press enter to quit.");
             String hash = askHash();
-            MD5Crack cracker = new MD5Crack(charset, minPw, maxPw, chainsPerTable, chainLength, filename);
+            MD5Crack cracker = new MD5Crack(charset, minPw, maxPw, chainLength, filename);
             while (hash != null) {
                 cracker.crackHash(hash);
                 hash = askHash();
