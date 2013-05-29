@@ -27,6 +27,15 @@ public class Reductor {
         this.minPwLength = minPwLength;
     }
 
+
+    public byte[] reduce(byte[] hash, int functionNr) {
+        // plaintext length from a byte from the hash
+        byte pwLength = (byte)((functionNr) % (maxPwLength - minPwLength + 1) + minPwLength);
+        
+        return reduce(hash,functionNr,pwLength);
+        
+
+    }
     /**
      * Reduces hashes to charset indexes according to selected charset and
      * password length.
@@ -35,16 +44,7 @@ public class Reductor {
      * @param functionNr index of the reduction function
      * @return byte array containing charset index numbers
      */
-    public byte[] reduce(byte[] hash, int functionNr) {
-        // plaintext length from a byte from the hash
-        int pwLength = (functionNr) % (maxPwLength - minPwLength + 1) + minPwLength;
-        
-        return reduce(hash,functionNr,pwLength);
-        
-
-    }
-
-    public byte[] reduce(byte[] hash, int functionNr, int pwLength) {
+    public byte[] reduce(byte[] hash, int functionNr, byte pwLength) {
         byte[] result = new byte[pwLength];
         for (int i = 0; i < pwLength; i++) {
             // unique results for each reduction function

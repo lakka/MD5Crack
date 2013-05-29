@@ -68,8 +68,12 @@ public class TableCreator {
         
         uihelper.printTableGenerationStartStats();
 
+        int keyspaceID = 0;
+        int[] keyspaceRatio = helper.calculateKeyspaceRatios(charset, minPwLength, maxPwLength, chainsPerTable);
         for (int i = 0; i < chainsPerTable; i++) {
-            byte[] startingPoint = new byte[i % (maxPwLength - minPwLength + 1) + minPwLength];
+            byte pwLength = (byte)(keyspaceID + minPwLength);
+            
+            byte[] startingPoint = new byte[pwLength];
             createRandomStartingPoint(random, startingPoint);
 
             byte[] currentEndpoint = startingPoint;
@@ -77,19 +81,24 @@ public class TableCreator {
             int j;
             byte[] hash;
             // loop each column with different reducing function
-            for (j = 0; j < chainLength-1; j++) {
+            for (j = 0; j < chainLength; j++) {
                 hash = md.digest(currentEndpoint);
-                currentEndpoint = rf.reduce(hash, j);
-                 hashset.add(new Bytes(hash));
+                currentEndpoint = rf.reduce(hash, j, pwLength);
+                hashset.add(new Bytes(hash));
             }
-            hash = md.digest(currentEndpoint);
-            currentEndpoint = rf.reduce(hash, j, i % (maxPwLength - minPwLength + 1) + minPwLength);
+            
+            if(i > keyspaceRatio[keyspaceID] && keyspaceID < keyspaceRatio.length-1) {
+                keyspaceID++;
+            }
+
 
             byteset.add(new Bytes(currentEndpoint));
             file.writeToFile(dos, startingPoint, currentEndpoint);
+            
+//            System.out.println(helper.bytesToString(startingPoint, charset) + "   " + helper.bytesToString(currentEndpoint,charset));
 
             // print progress
-            if (i != 0 && i % (chainsPerTable / 10) == 0) {
+            if (i != 0 && i % (chainsPerTable / 20) == 0) {
                 uihelper.printTableGenerationProgress(i, chainsPerTable);
             }
         }

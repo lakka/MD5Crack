@@ -43,6 +43,18 @@ public class CommonHelper {
         }
         return true;
     }
+    
+    /**
+     * Calculates a password length within the limits of min and max.
+     * 
+     * @param chainNr current chain number
+     * @param minPwLength minimum password length
+     * @param maxPwLength maximum password length
+     * @return a number between max and min, depends on chainNr
+     */
+    public byte calculatePwLength(int chainNr, int minPwLength, int maxPwLength) {
+        return (byte) (chainNr % (maxPwLength - minPwLength + 1) + minPwLength);
+    }
 
     /**
      * Get Java's built-in MD5-digester.
@@ -74,6 +86,15 @@ public class CommonHelper {
             keyspace += (long) Math.pow(charset.length(), i);
         }
         return keyspace;
+    }
+    
+    public int[] calculateKeyspaceRatios(String charset, int minPwLength, int maxPwLength, int chainsPerTable) {
+        long total = calculateKeyspace(charset,minPwLength,maxPwLength);
+        int[] ratios = new int[maxPwLength-minPwLength+1];
+        for (int i = 0; i <= maxPwLength-minPwLength; i++) {
+            ratios[i] = (int)(chainsPerTable/(total/calculateKeyspace(charset,i,i)));
+        }
+        return ratios;
     }
 
     /**

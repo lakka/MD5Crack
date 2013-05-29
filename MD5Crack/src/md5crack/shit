@@ -14,3 +14,4 @@
 //                    System.out.print(Integer.toString((currentHash[j] & 0xff) + 0x100, 16).substring(1));
 //                }
 //                System.out.println(" "+currentHash.length);
+

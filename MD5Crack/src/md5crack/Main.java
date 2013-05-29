@@ -6,7 +6,7 @@ import helpers.Reductor;
 
 /**
  *
- * @author Torso
+ * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class Main {
 
@@ -16,17 +16,28 @@ public class Main {
     public static void main(String[] args) throws Exception {
 //        UI ui = new UI();
 //        ui.start();
-        
+        int minPw = 3;
+        int maxPw = 4;
+        int chains = 100000;
+        int chainl = 500;
+        String akk = "b610295fea526d7c32a5ab82d74a9063";
+        String kisa = "1c0d894f6f6ab511099a568f6e876c2f";
+        String tulr = "03b03e55a55bee6e4771f4974050b9cb";
+        String pisa = "9428520f7f19c29574b912796d43fb11";
+        boolean createTable = false;
         
 //
-//        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm", 4,4, 45000, 350);
-//        tc.createTable();
-        
         CommonHelper helper = new CommonHelper();
-        System.out.println("Keyspace: " + helper.calculateKeyspace("qwertyuiopasdfghjklzxcvbnm", 4, 4));
+        System.out.println("Keyspace: " + helper.calculateKeyspace("qwertyuiopasdfghjklzxcvbnm", minPw, maxPw));
+        if(createTable) {
+        TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains, chainl);
+        tc.createTable();
+        }
         
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", 4,4, 350, "yksi.tbl");
-        cracker.crackHash("bf0937fcb05b460e447a0bea7537218a");
+
+//        
+        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "yksi.tbl");
+        cracker.crackHash(akk);
         
 //        CommonHelper helper = new CommonHelper();
 //        

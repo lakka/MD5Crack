@@ -67,6 +67,16 @@ public class CommonHelperTest {
         assertFalse(helper.equalBytes(bytes1, bytes2));
     }
     
+    @Test
+    public void calculatePwLengthReturnsValueBetweenMaxAndMin() {
+        int max = 5;
+        int min = 3;
+        for (int i = 800; i < 1000; i++) {
+            byte pwLength = helper.calculatePwLength(i, min, max);
+            assertTrue(pwLength >= 3 && pwLength <= max);
+        }
+    }
+    
 
 
 }
