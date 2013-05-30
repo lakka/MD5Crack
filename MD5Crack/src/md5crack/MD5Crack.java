@@ -66,7 +66,9 @@ public class MD5Crack {
 
                 // add the endpoint to a hashset for further analysis
                 if (table.containsKey(bytes)) {
+//                    if(table.get(bytes).getBytes().length == bytes.getBytes().length) {
                     foundEndpoints.add(bytes);
+//                    }
                 }
 
             }

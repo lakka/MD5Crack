@@ -37,7 +37,7 @@ public class Main {
 
 //        
         MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "yksi.tbl");
-        cracker.crackHash(akk);
+        cracker.crackHash(pisa);
         
 //        CommonHelper helper = new CommonHelper();
 //        

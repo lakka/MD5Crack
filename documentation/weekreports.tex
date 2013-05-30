@@ -27,4 +27,20 @@ Performance has been tested by hand from the very start of this project. Sadly, 
 
 During this week I also started rereading the materials from Data Structures -course regarding hash tables. I implemented a crude version of a hash table (with insufficient testing), but realized that I cannot make an array large enough / the whole file can't be read to memory at once, since the table files can be tens or even hundreds of gigabytes in size. I have to figure out what I'm going to load to memory and what to keep on the disk, and how to access the data on the disk. I also countered some major performance issues when testing my hash table implementation. This time I used linked lists to deal with collisions, next I'm going to try open addressing - since I won't need to create new object for each value then - and see how it affects  performance.
 
+\section*{Week 3}
+This week I mostly concentrated on getting the hash cracking working. I noticed that my code had some major bugs and I've mostly spent my time trying to create rainbow tables with different parameters, and trying to crack some hashes.
+
+First bug I noticed was that reading/writing passwords of different lengths didn't actually work. The endpoint's length didn't match the starting point's, and the passwords were read from the file as if they were all of the same length. This has now been fixed, but there are still issues with the probabilities of successful hash cracking, since the keyspaces of passwords of different length are of different size.
+
+Second bug I found was not actually a bug. I was wondering why my code generates so little different endpoints, and came to the conclusion that the problem must be within the reduction function. Only then it cleared to me that these same endpoints are the collisions mentioned in the papers regarding rainbow table cracking. The answer for this problem was not in the reduction function, but in the parameters of table creation (chains per table and chain length). I found that the optimal values for these parameters are (roughly):
+\begin{description}
+\item[chains per table] 1/4 of the total keyspace size or less
+\item[chainlength] 1/200 of the number of chains or more
+\end{description}
+
+When I'd fixed these bugs, I realized that MD5Crack-class did not compare the hashes correctly. For instance, I didn't extract the original hash's byte array correctly. I learned that hashes are actually string representations of hexadecimal numbers. I also noticed that MD5Crack didn't actually produce the correct chains, but rather just hashed/reduced the endpoint over and over again.
+
+In the end of the day however, I got the cracking to work. It currently cracks passwords of fixed lengths quite proficiently, and cracks about 50\% of hashes of passwords with different lengths. I'm not yet quite satisfied with the latter percentage, but I suspect that by adjusting the table creation parameters I can lift the probability to a tolerable level.
+
+Next I'm going to finalize the password cracking part of my project, and then try and solve the problems relating to loading a large file into memory.
 \end{document}
