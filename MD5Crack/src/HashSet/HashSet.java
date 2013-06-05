@@ -1,17 +1,19 @@
 package HashSet;
 
 import helpers.CommonHelper;
+import java.util.Iterator;
 
 /**
  * A hash table implementation.
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-public class HashSet {
+public class HashSet implements Iterable<Bytes> {
 
     private Bytes[] bytesTable;
     private HashFunction hf;
-    private CommonHelper helper;
+    protected CommonHelper helper;
+    private int size;
 
     /**
      * Initializes the hash table.
@@ -25,6 +27,7 @@ public class HashSet {
         int prime = helper.calculatePrime(size);
         this.bytesTable = new Bytes[prime];
         this.hf = new HashFunction(prime, minPwLength, maxPwLength);
+
 
     }
 
@@ -40,11 +43,14 @@ public class HashSet {
             bytesTable[index] = newBytes;
         } else {
             Bytes currentBytes = bytesTable[index];
-            while(currentBytes.next != null) {
+            if(currentBytes.equals(newBytes)) return;
+            while (currentBytes.next != null) {
+                if(currentBytes.equals(newBytes)) return;
                 currentBytes = currentBytes.next;
             }
             currentBytes.next = newBytes;
         }
+        size++;
     }
 
     /**
@@ -68,7 +74,6 @@ public class HashSet {
 //        }
 //        return otherBytes.getBytes();
 //    }
-
     /**
      * Checks if a byte array is a key in the table.
      *
@@ -90,7 +95,10 @@ public class HashSet {
         }
         return true;
     }
-    
+
+    public int size() {
+        return size;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -110,4 +118,11 @@ public class HashSet {
     public Bytes[] getBytes() {
         return bytesTable;
     }
+
+    @Override
+    public Iterator<Bytes> iterator() {
+        return new HashSetIterator(bytesTable,size);
+    }
+
+
 }

@@ -11,7 +11,9 @@ import java.util.Arrays;
  */
 public class Bytes {
     private byte[] bytes;
-    Bytes next;
+    // declared public for testing
+    public Bytes next;
+    
     public Bytes(byte[] bytes, Bytes next) {
         this.bytes = bytes;
         this.next = next;

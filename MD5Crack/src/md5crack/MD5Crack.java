@@ -1,6 +1,7 @@
 package md5crack;
 
 import HashSet.Bytes;
+import HashSet.HashSet;
 import helpers.CommonHelper;
 import helpers.FileHelper;
 import helpers.Reductor;
@@ -8,7 +9,6 @@ import helpers.UIHelper;
 import java.io.DataInputStream;
 import java.security.MessageDigest;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * A class for cracking an MD5 hash. Uses a previously generated rainbow table.
@@ -55,13 +55,15 @@ public class MD5Crack {
         Reductor reductor = new Reductor(charset, minPwLength, maxPwLength);
         MessageDigest md = helper.getMD5digester();
 
-        HashSet<Bytes> foundEndpoints = new HashSet<>();
+        
 
         uihelper.startFileRead();
         DataInputStream dis = file.openFile(filename);
         HashMap<Bytes, Bytes> table = file.readTable(dis, minPwLength, maxPwLength);
+        
+        System.out.println("Table size: " + table.size());
 
-
+        HashSet foundEndpoints = new HashSet(5000,minPwLength,maxPwLength);
 
         byte[] hash = helper.hexStringToByteArray(hashString);
         byte[] reducedEndpoint = null;
@@ -78,12 +80,13 @@ public class MD5Crack {
 
                 // add the endpoint to a hashset for further analysis
                 if (table.containsKey(bytes)) {
-                    foundEndpoints.add(bytes);
+                    foundEndpoints.insert(reducedEndpoint);
                 }
 
             }
         }
         uihelper.printEndpointCount(foundEndpoints.size());
+
 
 
 

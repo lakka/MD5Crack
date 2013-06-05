@@ -32,6 +32,29 @@ public class HashSetTest {
         assertFalse(Arrays.asList(ht.getBytes()).isEmpty());
     }
     
+    @Test
+    public void sizeIsZero() {
+        assertEquals(0,ht.size());
+    }
+    
+    @Test
+    public void sizeReturnsCorrectValueWhenTwoDifferentArraysAreInserted() {
+        byte[] bytes = {122,123,124};
+        byte[] bytes2 = {122,123,122};
+        ht.insert(bytes);
+        ht.insert(bytes2);
+        assertEquals(2,ht.size());
+    }
+    
+        @Test
+    public void sizeReturnsCorrectValueWhenTwoSameArraysAreInserted() {
+        byte[] bytes = {122,123,122};
+        byte[] bytes2 = {122,123,122};
+        ht.insert(bytes);
+        ht.insert(bytes2);
+        assertEquals(1,ht.size());
+    }
+    
 //    @Test
 //    public void isEmptyReturnsTrue() {
 //        assertTrue(ht.isEmpty());
