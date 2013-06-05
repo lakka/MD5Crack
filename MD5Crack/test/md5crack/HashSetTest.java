@@ -2,6 +2,7 @@
 
 package md5crack;
 
+import HashSet.Bytes;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,8 +28,7 @@ public class HashSetTest {
     @Test
     public void insertAddsToTable() {
         byte[] bytes = {122,123,124};
-        byte[] bytes2 = {122,123,122};
-        ht.insert(bytes);
+        ht.insert(new Bytes(bytes));
         assertFalse(Arrays.asList(ht.getBytes()).isEmpty());
     }
     
@@ -41,8 +41,8 @@ public class HashSetTest {
     public void sizeReturnsCorrectValueWhenTwoDifferentArraysAreInserted() {
         byte[] bytes = {122,123,124};
         byte[] bytes2 = {122,123,122};
-        ht.insert(bytes);
-        ht.insert(bytes2);
+        ht.insert(new Bytes(bytes));
+        ht.insert(new Bytes(bytes2));
         assertEquals(2,ht.size());
     }
     
@@ -50,8 +50,8 @@ public class HashSetTest {
     public void sizeReturnsCorrectValueWhenTwoSameArraysAreInserted() {
         byte[] bytes = {122,123,122};
         byte[] bytes2 = {122,123,122};
-        ht.insert(bytes);
-        ht.insert(bytes2);
+        ht.insert(new Bytes(bytes));
+        ht.insert(new Bytes(bytes2));
         assertEquals(1,ht.size());
     }
     
@@ -78,16 +78,16 @@ public class HashSetTest {
     @Test
     public void containsReturnsTrue() {
         byte[] bytes = {122,123,124};
-        ht.insert(bytes);
-        assertTrue(ht.contains(bytes));
+        ht.insert(new Bytes(bytes));
+        assertTrue(ht.contains(new Bytes(bytes)));
     }
     
     @Test
     public void containsReturnsFalse() {
         byte[] bytes = {122,123,124};
         byte[] bytes2 = {122,123,122};
-        ht.insert(bytes);
-        assertFalse(ht.contains(bytes2));
+        ht.insert(new Bytes(bytes));
+        assertFalse(ht.contains(new Bytes(bytes2)));
     }
 
 

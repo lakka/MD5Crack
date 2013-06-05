@@ -1,8 +1,10 @@
 package md5crack;
 
+import HashSet.Bytes;
 import HashSet.HashSet;
 import helpers.CommonHelper;
 import helpers.Reductor;
+import java.util.Iterator;
 
 /**
  *
@@ -16,6 +18,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
+
+
 //        UI ui = new UI();
 //        ui.start();
         int minPw = 3;
@@ -41,7 +45,7 @@ public class Main {
 
 //        
         MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "yksi.tbl");
-        cracker.crackHash(akk);
+        cracker.crackHash(kisa);
         
 //        CommonHelper helper = new CommonHelper();
 //        

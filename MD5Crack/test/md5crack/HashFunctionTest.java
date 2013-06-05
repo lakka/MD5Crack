@@ -2,11 +2,9 @@
 
 package md5crack;
 
+import HashSet.Bytes;
 import HashSet.HashFunction;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -31,14 +29,14 @@ public class HashFunctionTest {
     public void sameHashValueForSameKeys() {
         byte[] bytes = {123,123,123};
         byte[] bytes2 = {123,123,123};
-        assertEquals(hf.hash(bytes),hf.hash(bytes2));
+        assertEquals(hf.hash(new Bytes(bytes)),hf.hash(new Bytes(bytes2)));
     }
     
     @Test
     public void differentHashValueForDifferentKeys() {
         byte[] bytes = {123,123,123};
         byte[] bytes2 = {123,123,124};
-        assertNotSame(hf.hash(bytes),hf.hash(bytes2));
+        assertNotSame(hf.hash(new Bytes(bytes)),hf.hash(new Bytes(bytes2)));
     }
 
 

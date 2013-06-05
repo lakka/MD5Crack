@@ -63,7 +63,7 @@ public class MD5Crack {
         
         System.out.println("Table size: " + table.size());
 
-        HashSet foundEndpoints = new HashSet(5000,minPwLength,maxPwLength);
+        HashSet foundEndpoints = new HashSet(table.size()/11,minPwLength,maxPwLength);
 
         byte[] hash = helper.hexStringToByteArray(hashString);
         byte[] reducedEndpoint = null;
@@ -80,18 +80,16 @@ public class MD5Crack {
 
                 // add the endpoint to a hashset for further analysis
                 if (table.containsKey(bytes)) {
-                    foundEndpoints.insert(reducedEndpoint);
+                    foundEndpoints.insert(bytes);
                 }
 
             }
         }
         uihelper.printEndpointCount(foundEndpoints.size());
 
-
-
-
         // loop through matching endpoints to eliminate false alarms
         for (Bytes endpoint : foundEndpoints) {
+            
             Bytes currentPlaintext = table.get(endpoint);
             byte pwLength = (byte) endpoint.getBytes().length;
             byte[] currentHash;

@@ -50,6 +50,14 @@ public class Bytes {
         return true;
     }
     
+    public String toString() {
+        String ret = "";
+        for (int i = 0; i < bytes.length; i++) {
+            ret += bytes[i]+", ";
+        }
+        return ret;
+    }
+    
     
 
 }

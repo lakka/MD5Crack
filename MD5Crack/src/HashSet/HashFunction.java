@@ -28,8 +28,9 @@ public class HashFunction {
      * @param bytes
      * @return index number to use with hash table
      */
-    public int hash(byte[] bytes) {
+    public int hash(Bytes bytes2) {
         int hash = 0;
+        byte[] bytes = bytes2.getBytes();
         for (int i = 1; i < firstBytes; i++) {
             hash += Math.pow(bytes[i-1],i);
         }

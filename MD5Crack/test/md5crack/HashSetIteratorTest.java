@@ -27,7 +27,7 @@ public class HashSetIteratorTest {
         // create 'hashset'
         for (byte i = 0; i < 120; i++) {
             byte[] bytes = {123,123,i};
-            hs.insert(bytes);
+            hs.insert(new Bytes(bytes));
         }
         hsi = new HashSetIterator(hs.getBytes(),120);
     }

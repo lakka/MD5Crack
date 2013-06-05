@@ -4,7 +4,7 @@ import helpers.CommonHelper;
 import java.util.Iterator;
 
 /**
- * A hash table implementation.
+ * A HashSet implementation.
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
@@ -12,7 +12,7 @@ public class HashSet implements Iterable<Bytes> {
 
     private Bytes[] bytesTable;
     private HashFunction hf;
-    protected CommonHelper helper;
+    private CommonHelper helper;
     private int size;
 
     /**
@@ -27,18 +27,18 @@ public class HashSet implements Iterable<Bytes> {
         int prime = helper.calculatePrime(size);
         this.bytesTable = new Bytes[prime];
         this.hf = new HashFunction(prime, minPwLength, maxPwLength);
-
+        
+        
 
     }
 
     /**
-     * Insert a byte array to the table.
+     * Insert a byte array to the table. If the table index is taken, add it to a linked list.
      *
-     * @param bytes
+     * @param bytes Bytes to add
      */
-    public void insert(byte[] key) {
-        Bytes newBytes = new Bytes(key);
-        int index = hf.hash(key);
+    public void insert(Bytes newBytes) {
+        int index = hf.hash(newBytes);
         if (bytesTable[index] == null) {
             bytesTable[index] = newBytes;
         } else {
@@ -77,13 +77,13 @@ public class HashSet implements Iterable<Bytes> {
     /**
      * Checks if a byte array is a key in the table.
      *
-     * @param bytes
+     * @param bytes Bytes to check
      * @return true, if byte array exists
      */
-    public boolean contains(byte[] bytes) {
+    public boolean contains(Bytes bytes) {
         int index = hf.hash(bytes);
         Bytes otherBytes = bytesTable[index];
-        while (otherBytes != null && !helper.equalBytes(bytes, otherBytes.getBytes())) {
+        while (otherBytes != null && !bytes.equals(otherBytes)) {
             if (otherBytes.next != null) {
                 otherBytes = otherBytes.next;
             } else {
