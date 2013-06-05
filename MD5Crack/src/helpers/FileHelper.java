@@ -1,6 +1,6 @@
 package helpers;
 
-import HashTable.Bytes;
+import HashSet.Bytes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -24,7 +24,7 @@ public class FileHelper {
     public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
 //        File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+"-"+ (""+System.currentTimeMillis()).substring(4) + ".tbl");
-        File file = new File("yksi.tbl");
+        File file = new File("kaksi.tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));

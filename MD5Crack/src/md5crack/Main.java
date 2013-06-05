@@ -1,11 +1,13 @@
 package md5crack;
 
-import HashTable.HashTable;
+import HashSet.HashSet;
 import helpers.CommonHelper;
 import helpers.Reductor;
 
 /**
  *
+ * This class is currently used only in testing/debugging
+ * 
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class Main {
@@ -20,15 +22,17 @@ public class Main {
         int maxPw = 4;
         int chains = 100000;
         int chainl = 500;
+        String kka = "ec7b078a5b8df149983c1210d4a1b1db";
         String akk = "b610295fea526d7c32a5ab82d74a9063";
         String kisa = "1c0d894f6f6ab511099a568f6e876c2f";
         String tulr = "03b03e55a55bee6e4771f4974050b9cb";
         String pisa = "9428520f7f19c29574b912796d43fb11";
-        boolean createTable = false;
+        boolean createTable = true;
         
 //
         CommonHelper helper = new CommonHelper();
         System.out.println("Keyspace: " + helper.calculateKeyspace("qwertyuiopasdfghjklzxcvbnm", minPw, maxPw));
+        
         if(createTable) {
         TableCreator tc = new TableCreator("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains, chainl);
         tc.createTable();
@@ -36,8 +40,8 @@ public class Main {
         
 
 //        
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "yksi.tbl");
-        cracker.crackHash(pisa);
+        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "kaksi.tbl");
+        cracker.crackHash(tulr);
         
 //        CommonHelper helper = new CommonHelper();
 //        

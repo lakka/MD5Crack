@@ -1,6 +1,6 @@
 package md5crack;
 
-import HashTable.Bytes;
+import HashSet.Bytes;
 import helpers.CommonHelper;
 import helpers.FileHelper;
 import helpers.Reductor;
@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- *
+ * A class for cracking an MD5 hash. Uses a previously generated rainbow table.
+ * 
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class MD5Crack {
@@ -23,6 +24,15 @@ public class MD5Crack {
     private String filename;
     private UIHelper uihelper;
 
+    /**
+     * Initializes a class for cracking MD5 hashes.
+     * 
+     * @param charset character set for the passwords
+     * @param minPwLength minimum password length
+     * @param maxPwLength maximum password length
+     * @param chainLength length of chains in the rainbow table
+     * @param filename filename of the rainbow table
+     */
     public MD5Crack(String charset, int minPwLength, int maxPwLength, int chainLength, String filename) {
         this.charset = charset;
         this.minPwLength = minPwLength;
@@ -33,6 +43,12 @@ public class MD5Crack {
         uihelper = new UIHelper();
     }
 
+    /**
+     * Cracks a hash and prints the results.
+     * 
+     * @param hashString a string representation of the hash to be cracked
+     * @return true, if the hash was cracked, false otherwise
+     */
     public boolean crackHash(String hashString) {
         FileHelper file = new FileHelper();
         CommonHelper helper = new CommonHelper();
@@ -45,10 +61,6 @@ public class MD5Crack {
         DataInputStream dis = file.openFile(filename);
         HashMap<Bytes, Bytes> table = file.readTable(dis, minPwLength, maxPwLength);
 
-        //        Print rainbow table contents
-//        for (Bytes bs : table.keySet()) {
-//            System.out.println(helper.bytesToString(bs.getBytes(), charset) + "   " + helper.bytesToString(table.get(bs).getBytes(),charset));
-//        }
 
 
         byte[] hash = helper.hexStringToByteArray(hashString);
@@ -66,9 +78,7 @@ public class MD5Crack {
 
                 // add the endpoint to a hashset for further analysis
                 if (table.containsKey(bytes)) {
-//                    if(table.get(bytes).getBytes().length == bytes.getBytes().length) {
                     foundEndpoints.add(bytes);
-//                    }
                 }
 
             }

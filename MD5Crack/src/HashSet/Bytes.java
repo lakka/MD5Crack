@@ -1,6 +1,6 @@
 
 
-package HashTable;
+package HashSet;
 
 import java.util.Arrays;
 

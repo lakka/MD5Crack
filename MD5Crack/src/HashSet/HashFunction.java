@@ -1,4 +1,4 @@
-package HashTable;
+package HashSet;
 
 /**
  * Hash function for hash table.

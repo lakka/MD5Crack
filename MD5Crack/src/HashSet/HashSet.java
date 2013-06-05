@@ -1,4 +1,4 @@
-package HashTable;
+package HashSet;
 
 import helpers.CommonHelper;
 
@@ -7,7 +7,7 @@ import helpers.CommonHelper;
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-public class HashTable {
+public class HashSet {
 
     private Bytes[] bytesTable;
     private HashFunction hf;
@@ -20,7 +20,7 @@ public class HashTable {
      * @param minPwLength minimum password length
      * @param maxPwLength maximum password length
      */
-    public HashTable(int size, int minPwLength, int maxPwLength) {
+    public HashSet(int size, int minPwLength, int maxPwLength) {
         helper = new CommonHelper();
         int prime = helper.calculatePrime(size);
         this.bytesTable = new Bytes[prime];
@@ -33,8 +33,8 @@ public class HashTable {
      *
      * @param bytes
      */
-    public void insert(byte[] key, byte[] value) {
-        Bytes newBytes = new Bytes(value);
+    public void insert(byte[] key) {
+        Bytes newBytes = new Bytes(key);
         int index = hf.hash(key);
         if (bytesTable[index] == null) {
             bytesTable[index] = newBytes;
@@ -53,21 +53,21 @@ public class HashTable {
      * @param bytes
      * @return matching value for byte array
      */
-    public byte[] search(byte[] bytes) {
-        int index = hf.hash(bytes);
-        Bytes otherBytes = bytesTable[index];
-        while (otherBytes != null && !helper.equalBytes(bytes, otherBytes.getBytes())) {
-            if (otherBytes.next != null) {
-                otherBytes = otherBytes.next;
-            } else {
-                break;
-            }
-        }
-        if (otherBytes == null) {
-            return null;
-        }
-        return otherBytes.getBytes();
-    }
+//    public byte[] search(byte[] bytes) {
+//        int index = hf.hash(bytes);
+//        Bytes otherBytes = bytesTable[index];
+//        while (otherBytes != null && !helper.equalBytes(bytes, otherBytes.getBytes())) {
+//            if (otherBytes.next != null) {
+//                otherBytes = otherBytes.next;
+//            } else {
+//                break;
+//            }
+//        }
+//        if (otherBytes == null) {
+//            return null;
+//        }
+//        return otherBytes.getBytes();
+//    }
 
     /**
      * Checks if a byte array is a key in the table.
@@ -90,6 +90,7 @@ public class HashTable {
         }
         return true;
     }
+    
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

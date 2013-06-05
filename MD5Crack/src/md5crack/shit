@@ -3,6 +3,8 @@
 //            System.out.println(helper.bytesToString(bs.getBytes(), charset) + "   " + helper.bytesToString(table.get(bs).getBytes(),charset));
 //        }
 
+//            System.out.println(helper.bytesToString(startingPoint, charset) + "   " + helper.bytesToString(currentEndpoint,charset));
+
         // Print original hash
 //        for (int j = 0; j < hash.length; j++) {
 //            System.out.print(hash[j] + " ");

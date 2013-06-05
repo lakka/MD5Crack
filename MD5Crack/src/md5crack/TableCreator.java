@@ -1,6 +1,6 @@
 package md5crack;
 
-import HashTable.Bytes;
+import HashSet.Bytes;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;
@@ -53,8 +53,6 @@ public class TableCreator {
         FileHelper file = new FileHelper();
         CommonHelper helper = new CommonHelper();
         UIHelper uihelper = new UIHelper();
-        HashSet<Bytes> byteset = new HashSet<>();
-        HashSet<Bytes> hashset = new HashSet<>();
 
         MessageDigest md = helper.getMD5digester();
         if (md == null) {
@@ -70,32 +68,21 @@ public class TableCreator {
 
         int keyspaceID = 0;
         int[] keyspaceRatio = helper.calculateKeyspaceRatios(charset, minPwLength, maxPwLength, chainsPerTable);
+        
+        // generate chains
         for (int i = 0; i < chainsPerTable; i++) {
             byte pwLength = (byte)(keyspaceID + minPwLength);
             
-            byte[] startingPoint = new byte[pwLength];
-            createRandomStartingPoint(random, startingPoint);
+            byte[] startingPoint = createRandomStartingPoint(random, pwLength);
 
-            byte[] currentEndpoint = startingPoint;
-        
-            int j;
-            byte[] hash;
-            // loop each column with different reducing function
-            for (j = 0; j < chainLength; j++) {
-                hash = md.digest(currentEndpoint);
-                currentEndpoint = rf.reduce(hash, j, pwLength);
-                hashset.add(new Bytes(hash));
-            }
+            byte[] endpoint = calculateChain(md, startingPoint, rf, pwLength);
             
+            // change keyspace when keyspace size is exceeded
             if(i > keyspaceRatio[keyspaceID] && keyspaceID < keyspaceRatio.length-1) {
                 keyspaceID++;
             }
 
-
-            byteset.add(new Bytes(currentEndpoint));
-            file.writeToFile(dos, startingPoint, currentEndpoint);
-            
-//            System.out.println(helper.bytesToString(startingPoint, charset) + "   " + helper.bytesToString(currentEndpoint,charset));
+            file.writeToFile(dos, startingPoint, endpoint);
 
             // print progress
             if (i != 0 && i % (chainsPerTable / 20) == 0) {
@@ -104,8 +91,7 @@ public class TableCreator {
         }
 
         uihelper.printTableGenerationProgress(chainsPerTable, chainsPerTable);
-        System.out.println("Byteset size: " + byteset.size());
-        System.out.println("Hashset size: " + hashset.size());
+
         file.closeFile(dos);
         return true;
     }
@@ -116,11 +102,34 @@ public class TableCreator {
      * @param random
      * @param startingPoint array, which will be overwritten by the 'password'
      */
-    private void createRandomStartingPoint(Random random, byte[] startingPoint) {
+    private byte[] createRandomStartingPoint(Random random, byte pwLength) {
+        byte[] startingPoint = new byte[pwLength];
         random.nextBytes(startingPoint);
 
         for (int a = 0; a < startingPoint.length; a++) {
             startingPoint[a] = (byte) (Math.abs(startingPoint[a] % charset.length()));
         }
+        return startingPoint;
+    }
+
+    /**
+     * Loops each column with different reducing function.
+     * 
+     * @param md
+     * @param currentEndpoint
+     * @param rf
+     * @param pwLength
+     * @param hashset
+     * @return a byte array containing the endpoint of the chain
+     */
+    private byte[] calculateChain(MessageDigest md, byte[] currentEndpoint, Reductor rf, byte pwLength) {
+        int j;
+        byte[] hash;
+        // loop each column with different reducing function
+        for (j = 0; j < chainLength; j++) {
+            hash = md.digest(currentEndpoint);
+            currentEndpoint = rf.reduce(hash, j, pwLength);
+        }
+        return currentEndpoint;
     }
 }

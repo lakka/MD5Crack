@@ -2,7 +2,7 @@
 
 package md5crack;
 
-import HashTable.HashFunction;
+import HashSet.HashFunction;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
