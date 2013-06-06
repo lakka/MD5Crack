@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 /**
  *
- * This class is currently used only in testing/debugging
+ * This class is currently used only for testing/debugging
  * 
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
@@ -44,7 +44,7 @@ public class Main {
 
 //        
         MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains,chainl, "yksi.tbl");
-        cracker.crackHash(kisa);
+        cracker.crackHash(pisa);
         
 //        CommonHelper helper = new CommonHelper();
 //        
