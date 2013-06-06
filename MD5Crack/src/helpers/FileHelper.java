@@ -23,8 +23,8 @@ public class FileHelper {
      */
     public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
-//        File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+"-"+ (""+System.currentTimeMillis()).substring(4) + ".tbl");
-        File file = new File("kaksi.tbl");
+        File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+".tbl");
+//        File file = new File("kaksi.tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));

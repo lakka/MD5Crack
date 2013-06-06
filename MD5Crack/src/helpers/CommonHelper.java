@@ -88,6 +88,17 @@ public class CommonHelper {
         return keyspace;
     }
 
+    /**
+     * Calculates keyspace ratios in relation to chains per table. This is useful
+     * when trying to create a rainbow table. (If ratios aren't used, the table
+     * will have more chains for shorter passwords than is necessary)
+     * 
+     * @param charset
+     * @param minPwLength
+     * @param maxPwLength
+     * @param chainsPerTable
+     * @return an array containing the ratios. Each index represents a password length.
+     */
     public int[] calculateKeyspaceRatios(String charset, int minPwLength, int maxPwLength, int chainsPerTable) {
         long total = calculateKeyspace(charset, minPwLength, maxPwLength);
         int[] ratios = new int[maxPwLength - minPwLength + 1];

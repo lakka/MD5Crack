@@ -15,7 +15,7 @@ public class HashTable implements Iterable<Bytes> {
     private int size;
 
     /**
-     * Initializes the hash table (will be less than this).
+     * Initializes helper classes and calculates the size for the table.
      *
      * @param size maximum size of table
      * @param minPwLength minimum password length
@@ -58,8 +58,8 @@ public class HashTable implements Iterable<Bytes> {
     /**
      * Insert operation for keys with values.
      *
-     * @param key
-     * @param value
+     * @param key key to insert
+     * @param value value for the key
      */
     public void insert(Bytes key, Bytes value) {
         key.value = value;
@@ -83,7 +83,7 @@ public class HashTable implements Iterable<Bytes> {
     /**
      * Search a byte array from the table.
      *
-     * @param key
+     * @param key key to search
      * @return matching value for byte array
      */
     public Bytes search(Bytes key) {
@@ -126,6 +126,7 @@ public class HashTable implements Iterable<Bytes> {
     public Iterator<Bytes> iterator() {
         return new HashIterator(bytesTable, size);
     }
+
 
     private Bytes findKey(Bytes key) {
         int index = hf.hash(key);

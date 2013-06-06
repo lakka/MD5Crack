@@ -18,17 +18,26 @@ import java.util.Arrays;
  */
 public class HashMapTest {
     HashTable ht;
+    Bytes bytes;
+    Bytes bytes2;
 
 
     @Before
     public void setUp() {
         ht = new HashTable(300,3,5);
+        bytes = new Bytes(new byte[] {122,123,124});
+        bytes2 = new Bytes(new byte[] {122,123,122});
     }
     
     @Test
     public void insertAddsToTable() {
-        byte[] bytes = {122,123,124};
-        ht.insert(new Bytes(bytes));
+        ht.insert(bytes);
+        assertFalse(Arrays.asList(ht.getBytes()).isEmpty());
+    }
+    
+    @Test
+    public void insert2AddsToTable() {
+        ht.insert(bytes,bytes2);
         assertFalse(Arrays.asList(ht.getBytes()).isEmpty());
     }
     
@@ -39,19 +48,15 @@ public class HashMapTest {
     
     @Test
     public void sizeReturnsCorrectValueWhenTwoDifferentArraysAreInserted() {
-        byte[] bytes = {122,123,124};
-        byte[] bytes2 = {122,123,122};
-        ht.insert(new Bytes(bytes));
-        ht.insert(new Bytes(bytes2));
+        ht.insert(bytes);
+        ht.insert(bytes2);
         assertEquals(2,ht.size());
     }
     
         @Test
     public void sizeReturnsCorrectValueWhenTwoSameArraysAreInserted() {
-        byte[] bytes = {122,123,122};
-        byte[] bytes2 = {122,123,122};
-        ht.insert(new Bytes(bytes));
-        ht.insert(new Bytes(bytes2));
+        ht.insert(bytes);
+        ht.insert(bytes);
         assertEquals(1,ht.size());
     }
     
@@ -67,27 +72,28 @@ public class HashMapTest {
 //        assertFalse(ht.isEmpty());
 //    }
     
-//    @Test
-//    public void searchFindsValue() {
-//        byte[] bytes = {122,123,124};
-//        byte[] bytes2 = {122,123,122};
-//        ht.insert(bytes);
-//        assertEquals(bytes2,ht.search(bytes));
-//    }
+    @Test
+    public void searchFindsValue() {
+        ht.insert(bytes,bytes2);
+        assertEquals(bytes2,ht.search(bytes));
+    }
+    
+    @Test
+    public void searchReturnsNull() {
+        ht.insert(bytes);
+        assertNull(ht.search(bytes));
+    }
     
     @Test
     public void containsReturnsTrue() {
-        byte[] bytes = {122,123,124};
-        ht.insert(new Bytes(bytes));
-        assertTrue(ht.contains(new Bytes(bytes)));
+        ht.insert(bytes);
+        assertTrue(ht.contains(bytes));
     }
     
     @Test
     public void containsReturnsFalse() {
-        byte[] bytes = {122,123,124};
-        byte[] bytes2 = {122,123,122};
-        ht.insert(new Bytes(bytes));
-        assertFalse(ht.contains(new Bytes(bytes2)));
+        ht.insert(bytes);
+        assertFalse(ht.contains(bytes2));
     }
 
 
