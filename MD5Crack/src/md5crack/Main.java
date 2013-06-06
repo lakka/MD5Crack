@@ -1,7 +1,6 @@
 package md5crack;
 
-import HashSet.Bytes;
-import HashSet.HashSet;
+import hashtable.Bytes;
 import helpers.CommonHelper;
 import helpers.Reductor;
 import java.util.Iterator;
@@ -32,8 +31,8 @@ public class Main {
         String tulr = "03b03e55a55bee6e4771f4974050b9cb";
         String pisa = "9428520f7f19c29574b912796d43fb11";
         boolean createTable = false;
-        
-//
+//        
+////
         CommonHelper helper = new CommonHelper();
         System.out.println("Keyspace: " + helper.calculateKeyspace("qwertyuiopasdfghjklzxcvbnm", minPw, maxPw));
         
@@ -44,7 +43,7 @@ public class Main {
         
 
 //        
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chainl, "yksi.tbl");
+        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains,chainl, "yksi.tbl");
         cracker.crackHash(kisa);
         
 //        CommonHelper helper = new CommonHelper();

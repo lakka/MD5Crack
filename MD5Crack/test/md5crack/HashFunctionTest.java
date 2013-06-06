@@ -2,8 +2,8 @@
 
 package md5crack;
 
-import HashSet.Bytes;
-import HashSet.HashFunction;
+import hashtable.Bytes;
+import hashtable.HashFunction;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

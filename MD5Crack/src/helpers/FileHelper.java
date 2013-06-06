@@ -1,13 +1,13 @@
 package helpers;
 
-import HashSet.Bytes;
+import hashtable.Bytes;
+import hashtable.HashTable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 
 /**
  * File helper methods.
@@ -90,9 +90,9 @@ public class FileHelper {
      * @param pwLength password length
      * @return rainbow table
      */
-    public HashMap<Bytes, Bytes> readTable(DataInputStream dis, int minPwLength, int maxPwLength) {
+    public HashTable readTable(DataInputStream dis, int chainsPerTable, int minPwLength, int maxPwLength) {
 
-        HashMap<Bytes, Bytes> table = new HashMap<Bytes, Bytes>();
+        HashTable table = new HashTable(chainsPerTable/5, minPwLength, maxPwLength);
         int i = 0;
         
         while (true) {
@@ -105,7 +105,7 @@ public class FileHelper {
                 dis.readFully(endpoint);
                 Bytes bytese = new Bytes(endpoint);
                 Bytes bytess = new Bytes(startingPoint);
-                table.put(bytese, bytess);
+                table.insert(bytese, bytess);
                 i++;
             } catch (EOFException e) {
                 System.out.println("read " + i + " lines.");

@@ -1,14 +1,13 @@
 package md5crack;
 
-import HashSet.Bytes;
-import HashSet.HashSet;
+import hashtable.Bytes;
+import hashtable.HashTable;
 import helpers.CommonHelper;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.UIHelper;
 import java.io.DataInputStream;
 import java.security.MessageDigest;
-import java.util.HashMap;
 
 /**
  * A class for cracking an MD5 hash. Uses a previously generated rainbow table.
@@ -20,6 +19,7 @@ public class MD5Crack {
     private String charset;
     private int minPwLength;
     private int maxPwLength;
+    private int chainsPerTable;
     private int chainLength;
     private String filename;
     private UIHelper uihelper;
@@ -33,10 +33,11 @@ public class MD5Crack {
      * @param chainLength length of chains in the rainbow table
      * @param filename filename of the rainbow table
      */
-    public MD5Crack(String charset, int minPwLength, int maxPwLength, int chainLength, String filename) {
+    public MD5Crack(String charset, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength, String filename) {
         this.charset = charset;
         this.minPwLength = minPwLength;
         this.maxPwLength = maxPwLength;
+        this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
         this.filename = filename;
 
@@ -59,16 +60,17 @@ public class MD5Crack {
 
         uihelper.startFileRead();
         DataInputStream dis = file.openFile(filename);
-        HashMap<Bytes, Bytes> table = file.readTable(dis, minPwLength, maxPwLength);
+        HashTable table = file.readTable(dis, chainsPerTable, minPwLength, maxPwLength);
         
         System.out.println("Table size: " + table.size());
 
-        HashSet foundEndpoints = new HashSet(table.size()/11,minPwLength,maxPwLength);
+        HashTable foundEndpoints = new HashTable(table.size()/11,minPwLength,maxPwLength);
 
         byte[] hash = helper.hexStringToByteArray(hashString);
         byte[] reducedEndpoint = null;
-        // reduce the hash until a known endpoint is found, try every pw length
+        // try every known password length
         for (int pwLength = minPwLength; pwLength <= maxPwLength; pwLength++) {
+            // calculate endpoints with all reduction functions
             for (int i = chainLength - 1; i >= 0; i--) {
                 byte[] possibleEndpoint = hash;
                 for (int j = i; j < chainLength; j++) {
@@ -79,7 +81,7 @@ public class MD5Crack {
                 Bytes bytes = new Bytes(reducedEndpoint);
 
                 // add the endpoint to a hashset for further analysis
-                if (table.containsKey(bytes)) {
+                if (table.contains(bytes)) {
                     foundEndpoints.insert(bytes);
                 }
 
@@ -90,7 +92,7 @@ public class MD5Crack {
         // loop through matching endpoints to eliminate false alarms
         for (Bytes endpoint : foundEndpoints) {
             
-            Bytes currentPlaintext = table.get(endpoint);
+            Bytes currentPlaintext = table.search(endpoint);
             byte pwLength = (byte) endpoint.getBytes().length;
             byte[] currentHash;
             for (int i = 0; i < chainLength; i++) {

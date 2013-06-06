@@ -1,6 +1,6 @@
 
 
-package HashSet;
+package hashtable;
 
 import java.util.Arrays;
 
@@ -13,6 +13,7 @@ public class Bytes {
     private byte[] bytes;
     // declared public for testing
     public Bytes next;
+    public Bytes value;
     
     public Bytes(byte[] bytes, Bytes next) {
         this.bytes = bytes;
@@ -44,8 +45,15 @@ public class Bytes {
             return false;
         }
         final Bytes other = (Bytes) obj;
-        if (!Arrays.equals(this.bytes, other.bytes)) {
+        byte[] bytes1 = this.bytes;
+        byte[] bytes2 = other.bytes;
+        if (bytes.length != bytes2.length) {
             return false;
+        }
+        for (int i = 0; i < bytes1.length; i++) {
+            if (bytes1[i] != bytes2[i]) {
+                return false;
+            }
         }
         return true;
     }

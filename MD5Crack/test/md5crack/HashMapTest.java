@@ -2,27 +2,27 @@
 
 package md5crack;
 
-import HashSet.Bytes;
+import hashtable.Bytes;
+import hashtable.HashTable;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import HashSet.HashSet;
 import java.util.Arrays;
 
 /**
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-public class HashSetTest {
-    HashSet ht;
+public class HashMapTest {
+    HashTable ht;
 
 
     @Before
     public void setUp() {
-        ht = new HashSet(300,3,5);
+        ht = new HashTable(300,3,5);
     }
     
     @Test

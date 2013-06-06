@@ -43,10 +43,10 @@ public class CommonHelper {
         }
         return true;
     }
-    
+
     /**
      * Calculates a password length within the limits of min and max.
-     * 
+     *
      * @param chainNr current chain number
      * @param minPwLength minimum password length
      * @param maxPwLength maximum password length
@@ -87,12 +87,12 @@ public class CommonHelper {
         }
         return keyspace;
     }
-    
+
     public int[] calculateKeyspaceRatios(String charset, int minPwLength, int maxPwLength, int chainsPerTable) {
-        long total = calculateKeyspace(charset,minPwLength,maxPwLength);
-        int[] ratios = new int[maxPwLength-minPwLength+1];
-        for (int i = 0; i <= maxPwLength-minPwLength; i++) {
-            ratios[i] = (int)(chainsPerTable/(total/calculateKeyspace(charset,i,i)));
+        long total = calculateKeyspace(charset, minPwLength, maxPwLength);
+        int[] ratios = new int[maxPwLength - minPwLength + 1];
+        for (int i = 0; i <= maxPwLength - minPwLength; i++) {
+            ratios[i] = (int) (chainsPerTable / (total / calculateKeyspace(charset, i, i)));
         }
         return ratios;
     }
@@ -122,7 +122,7 @@ public class CommonHelper {
 
     /**
      * Converts a hexadecimal string to byte array.
-     * 
+     *
      * @param s string to convert
      * @return a corresponding byte array
      */

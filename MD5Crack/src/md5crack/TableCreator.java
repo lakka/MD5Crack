@@ -1,6 +1,6 @@
 package md5crack;
 
-import HashSet.Bytes;
+import hashtable.Bytes;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;

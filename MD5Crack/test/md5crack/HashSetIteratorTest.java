@@ -1,8 +1,8 @@
 package md5crack;
 
-import HashSet.Bytes;
-import HashSet.HashSet;
-import HashSet.HashSetIterator;
+import hashtable.Bytes;
+import hashtable.HashIterator;
+import hashtable.HashTable;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,20 +16,20 @@ import static org.junit.Assert.*;
  */
 public class HashSetIteratorTest {
 
-    private HashSetIterator hsi;
+    private HashIterator hsi;
 
     public HashSetIteratorTest() {
     }
 
     @Before
     public void setUp() {
-        HashSet hs = new HashSet(5000,3,5);
+        HashTable hs = new HashTable(5000,3,5);
         // create 'hashset'
         for (byte i = 0; i < 120; i++) {
             byte[] bytes = {123,123,i};
             hs.insert(new Bytes(bytes));
         }
-        hsi = new HashSetIterator(hs.getBytes(),120);
+        hsi = new HashIterator(hs.getBytes(),120);
     }
     
     @Test
@@ -66,7 +66,7 @@ public class HashSetIteratorTest {
         Bytes b = new Bytes(bytes);
         b.next = new Bytes(bytes2);
         bs[1] = b;
-        HashSetIterator hsi2 = new HashSetIterator(bs,2);
+        HashIterator hsi2 = new HashIterator(bs,2);
         assertArrayEquals(bytes,hsi2.next().getBytes());
         assertArrayEquals(bytes2,hsi2.next().getBytes());
     }

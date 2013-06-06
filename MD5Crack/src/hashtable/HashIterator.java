@@ -1,6 +1,6 @@
 
 
-package HashSet;
+package hashtable;
 
 import java.util.Iterator;
 
@@ -9,7 +9,7 @@ import java.util.Iterator;
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-    public class HashSetIterator implements Iterator<Bytes> {
+    public class HashIterator implements Iterator<Bytes> {
         
         private int position;
         private int size;
@@ -17,7 +17,7 @@ import java.util.Iterator;
         private Bytes currentBytes;
         private Bytes[] bytestable;
 
-        public HashSetIterator(Bytes[] bytestable, int size) {
+        public HashIterator(Bytes[] bytestable, int size) {
             this.bytestable = bytestable;
             this.size = size;
             this.position = -1;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported.");
         }
     }
 
