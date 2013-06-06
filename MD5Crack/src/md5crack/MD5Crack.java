@@ -28,7 +28,7 @@ public class MD5Crack {
     private HashTable table;
 
     /**
-     * Initializes a class for cracking MD5 hashes.
+     * Initializes helper classes and reads the table to memory.
      * 
      * @param charset character set for the passwords
      * @param minPwLength minimum password length
@@ -72,6 +72,14 @@ public class MD5Crack {
         return eliminateFalseAlarms(foundEndpoints, table, hash);
     }
     
+    /**
+     * Loops through known password lengths, and tries to reduce the hash with different reduction functions
+     * in order to find matching endpoints from the rainbow table.
+     * 
+     * @param hash
+     * @param table
+     * @return 
+     */
     private HashTable searchEndpoints(byte[] hash, HashTable table) {
         HashTable foundEndpoints = new HashTable(table.size()/11,minPwLength,maxPwLength);
 
@@ -98,6 +106,15 @@ public class MD5Crack {
         return foundEndpoints;
     }
 
+    /**
+     * Eliminates false alarms, false alarms being endpoints that don't point to chains that
+     * produce the MD5-hash. This cracks the hash.
+     * 
+     * @param foundEndpoints
+     * @param table
+     * @param hash
+     * @return true, if the hash was cracked, false otherwise
+     */
     private boolean eliminateFalseAlarms(HashTable foundEndpoints, HashTable table, byte[] hash) {
         // loop through matching endpoints to eliminate false alarms
         for (Bytes endpoint : foundEndpoints) {
