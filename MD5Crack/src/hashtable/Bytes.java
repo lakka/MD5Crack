@@ -27,6 +27,7 @@ public class Bytes {
         return bytes;
     }
 
+    // only for debugging
     @Override
     public int hashCode() {
         int hash = 0;
