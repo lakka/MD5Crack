@@ -19,10 +19,13 @@ public class MD5Crack {
     private String charset;
     private int minPwLength;
     private int maxPwLength;
-    private int chainsPerTable;
     private int chainLength;
-    private String filename;
     private UIHelper uihelper;
+    private FileHelper file;
+    private CommonHelper helper;
+    private Reductor reductor;
+    private MessageDigest md;
+    private HashTable table;
 
     /**
      * Initializes a class for cracking MD5 hashes.
@@ -37,11 +40,20 @@ public class MD5Crack {
         this.charset = charset;
         this.minPwLength = minPwLength;
         this.maxPwLength = maxPwLength;
-        this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
-        this.filename = filename;
 
         uihelper = new UIHelper();
+        file = new FileHelper();
+        helper = new CommonHelper();
+        reductor = new Reductor(charset, minPwLength, maxPwLength);
+        md = helper.getMD5digester();
+        
+        // read table to memory
+        uihelper.startFileRead();
+        DataInputStream dis = file.openFile(filename);
+        table = file.readTable(dis, chainsPerTable, minPwLength, maxPwLength);
+        
+        System.out.println("Table size: " + table.size());
     }
 
     /**
@@ -50,23 +62,19 @@ public class MD5Crack {
      * @param hashString a string representation of the hash to be cracked
      * @return true, if the hash was cracked, false otherwise
      */
-    public boolean crackHash(String hashString) {
-        FileHelper file = new FileHelper();
-        CommonHelper helper = new CommonHelper();
-        Reductor reductor = new Reductor(charset, minPwLength, maxPwLength);
-        MessageDigest md = helper.getMD5digester();
-
-        
-
-        uihelper.startFileRead();
-        DataInputStream dis = file.openFile(filename);
-        HashTable table = file.readTable(dis, chainsPerTable, minPwLength, maxPwLength);
-        
-        System.out.println("Table size: " + table.size());
-
-        HashTable foundEndpoints = new HashTable(table.size()/11,minPwLength,maxPwLength);
+    public boolean crackHash(String hashString) {   
 
         byte[] hash = helper.hexStringToByteArray(hashString);
+        
+        HashTable foundEndpoints = searchEndpoints(hash, table);
+        uihelper.printEndpointCount(foundEndpoints.size());
+        
+        return eliminateFalseAlarms(foundEndpoints, table, hash);
+    }
+    
+    private HashTable searchEndpoints(byte[] hash, HashTable table) {
+        HashTable foundEndpoints = new HashTable(table.size()/11,minPwLength,maxPwLength);
+
         byte[] reducedEndpoint = null;
         // try every known password length
         for (int pwLength = minPwLength; pwLength <= maxPwLength; pwLength++) {
@@ -87,8 +95,10 @@ public class MD5Crack {
 
             }
         }
-        uihelper.printEndpointCount(foundEndpoints.size());
+        return foundEndpoints;
+    }
 
+    private boolean eliminateFalseAlarms(HashTable foundEndpoints, HashTable table, byte[] hash) {
         // loop through matching endpoints to eliminate false alarms
         for (Bytes endpoint : foundEndpoints) {
             
