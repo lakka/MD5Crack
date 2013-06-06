@@ -10,12 +10,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 /**
- * File helper methods.
+ * Need to deal with files? Seek no more, for your savior is here.
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class FileHelper {
-
+    private UIHelper uihelper = new UIHelper();
+    
     /**
      * Creates a new table file
      *
@@ -24,12 +25,11 @@ public class FileHelper {
     public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
         File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+".tbl");
-//        File file = new File("kaksi.tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));
         } catch (Exception e) {
-            System.out.println("Could not create a table file.");
+            uihelper.writeError();
             return null;
         }
 
@@ -48,7 +48,7 @@ public class FileHelper {
             dos.write(startingPoint);
             dos.write(endpoint);
         } catch (Exception e) {
-            System.out.println("Could not write to table file.");
+            uihelper.writeError();
         }
     }
 
@@ -61,7 +61,7 @@ public class FileHelper {
         try {
             dos.close();
         } catch (Exception e) {
-            System.out.println("Could not close table file.");
+            uihelper.closeError();
         }
     }
 
@@ -77,7 +77,7 @@ public class FileHelper {
         try {
             dis = new DataInputStream(new FileInputStream(file));
         } catch (Exception e) {
-            System.out.println("Could not open the table file.");
+            uihelper.readError();
             return null;
         }
 
@@ -95,6 +95,8 @@ public class FileHelper {
         HashTable table = new HashTable(chainsPerTable/5, minPwLength, maxPwLength);
         int i = 0;
         
+        uihelper.startFileRead();
+        
         while (true) {
             int pwLength = i % (maxPwLength - minPwLength + 1) + minPwLength;
             byte[] startingPoint = new byte[pwLength];
@@ -108,16 +110,14 @@ public class FileHelper {
                 table.insert(bytese, bytess);
                 i++;
             } catch (EOFException e) {
-                System.out.println("read " + i + " lines.");
+                uihelper.endFileRead(i);
                 return table;
             } catch (Exception e) {
-                System.out.println("Error reading table file.");
+                uihelper.readError();
                 return null;
             }
 
         }
-
-        //return table;
 
 
     }

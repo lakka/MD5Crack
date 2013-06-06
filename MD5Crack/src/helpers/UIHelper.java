@@ -28,6 +28,11 @@ public class UIHelper {
     public void startFileRead() {
         System.out.print("Reading table file... ");
     }
+    
+    public void endFileRead(int lineCount) {
+        System.out.println("read " + lineCount + " lines.");
+    }
+    
     public void done() {
         System.out.println("done.");
     }
@@ -38,6 +43,19 @@ public class UIHelper {
     
     public void printEndpointCount(int endpoints) {
         System.out.println("Possible endpoints: "+endpoints);
+    }
+    
+    // table file error messages
+    public void writeError() {
+        System.out.println("Could not write to table file.");
+    }
+    
+    public void readError() {
+        System.out.println("Could not read table file.");
+    }
+    
+    public void closeError() {
+        System.out.println("Could not close table file.");
     }
 
 }
