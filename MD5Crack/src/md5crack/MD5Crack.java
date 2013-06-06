@@ -49,11 +49,9 @@ public class MD5Crack {
         md = helper.getMD5digester();
         
         // read table to memory
-        uihelper.startFileRead();
         DataInputStream dis = file.openFile(filename);
         table = file.readTable(dis, chainsPerTable, minPwLength, maxPwLength);
         
-        System.out.println("Table size: " + table.size());
     }
 
     /**
@@ -134,6 +132,7 @@ public class MD5Crack {
             }
             
         }
+        uihelper.crackFailed();
         return false;
     }
 }

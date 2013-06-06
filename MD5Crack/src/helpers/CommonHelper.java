@@ -90,8 +90,8 @@ public class CommonHelper {
 
     /**
      * Calculates keyspace ratios in relation to chains per table. This is useful
-     * when trying to create a rainbow table. (If ratios aren't used, the table
-     * will have more chains for shorter passwords than is necessary)
+     * when creating a rainbow table. If ratios aren't used, the table
+     * will have more chains for shorter passwords than is necessary.
      * 
      * @param charset
      * @param minPwLength
@@ -132,7 +132,7 @@ public class CommonHelper {
     }
 
     /**
-     * Converts a hexadecimal string to byte array.
+     * Converts a hexadecimal string to a byte array.
      *
      * @param s string to convert
      * @return a corresponding byte array

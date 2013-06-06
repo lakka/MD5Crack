@@ -2,6 +2,8 @@
 
 package helpers;
 
+import java.util.Random;
+
 /**
  * User interface helper class. Mainly handles printing of stats.
  * 
@@ -39,6 +41,30 @@ public class UIHelper {
     
     public void hashCracked(String plaintext) {
         System.out.println("Hash cracked: "+ plaintext);
+    }
+    
+    public void crackFailed() {
+        System.out.print("Failed to crack the hash :( ");
+        int random = new Random().nextInt(5);
+        String consolidation = "";
+        switch(random) {
+            case 0:
+                consolidation = "Maybe go eat a banana?";
+                break;
+            case 1:
+                consolidation = "Maybe go smoke a cigarette?";
+                break;
+            case 2:
+                consolidation = "Maybe get some sleep?";
+                break;
+            case 3:
+                consolidation = "Your mom still loves you, though.";
+                break;
+            case 4:
+                consolidation = "Please put the gun down... please.";
+                break;
+        }
+        System.out.println(consolidation);
     }
     
     public void printEndpointCount(int endpoints) {

@@ -1,13 +1,11 @@
 package md5crack;
 
-import hashtable.Bytes;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;
 import helpers.UIHelper;
 import java.io.DataOutputStream;
 import java.security.*;
-import java.util.HashSet;
 import java.util.Random;
 
 /**
