@@ -22,9 +22,15 @@ public class TableCreator {
     private int maxPwLength;
     private int chainsPerTable;
     private int chainLength;
+    private Random random;
+    private Reductor rf;
+    private CommonHelper helper;
+    private UIHelper uihelper;
+    private MessageDigest md;
+    private FileHelper file;
 
     /**
-     * Initializes a class for creating rainbow tables.
+     * Initializes helper classes and variables.
      *
      * @param charset character set of the passwords
      * @param maxPwLength maximum password length
@@ -37,7 +43,14 @@ public class TableCreator {
         this.maxPwLength = maxPwLength;
         this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
-
+        
+        random = new Random(System.currentTimeMillis());
+        rf = new Reductor(charset, minPwLength, maxPwLength);
+        file = new FileHelper();
+        helper = new CommonHelper();
+        uihelper = new UIHelper();
+        md = helper.getMD5digester();
+        
 
     }
 
@@ -47,35 +60,19 @@ public class TableCreator {
      *
      * @return true, if table generation was successful
      */
-    public boolean createTable() {
-        Random random = new Random(System.currentTimeMillis());
-        Reductor rf = new Reductor(charset, minPwLength, maxPwLength);
-        FileHelper file = new FileHelper();
-        CommonHelper helper = new CommonHelper();
-        UIHelper uihelper = new UIHelper();
-
-        MessageDigest md = helper.getMD5digester();
-        if (md == null) {
-            return false;
-        }
-
+    public boolean createTable() {  
         DataOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
-        if (dos == null) {
-            return false;
-        }
-        
         uihelper.printTableGenerationStartStats();
 
         int keyspaceID = 0;
         int[] keyspaceRatio = helper.calculateKeyspaceRatios(charset, minPwLength, maxPwLength, chainsPerTable);
-        
         // generate chains
         for (int i = 0; i < chainsPerTable; i++) {
             byte pwLength = (byte)(keyspaceID + minPwLength);
             
             byte[] startingPoint = createRandomStartingPoint(random, pwLength);
 
-            byte[] endpoint = calculateChain(md, startingPoint, rf, pwLength);
+            byte[] endpoint = calculateChain(startingPoint, pwLength);
             
             // change keyspace when keyspace size is exceeded
             if(i > keyspaceRatio[keyspaceID] && keyspaceID < keyspaceRatio.length-1) {
@@ -113,7 +110,7 @@ public class TableCreator {
     }
 
     /**
-     * Loops each column with different reducing function.
+     * Loops each column with different reducing function to produce an endpoint.
      * 
      * @param md
      * @param currentEndpoint
@@ -122,7 +119,7 @@ public class TableCreator {
      * @param hashset
      * @return a byte array containing the endpoint of the chain
      */
-    private byte[] calculateChain(MessageDigest md, byte[] currentEndpoint, Reductor rf, byte pwLength) {
+    private byte[] calculateChain(byte[] currentEndpoint, byte pwLength) {
         int j;
         byte[] hash;
         // loop each column with different reducing function
