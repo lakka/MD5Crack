@@ -30,7 +30,7 @@ public class Main {
         String kisa = "1c0d894f6f6ab511099a568f6e876c2f";
         String tulr = "03b03e55a55bee6e4771f4974050b9cb";
         String pisa = "9428520f7f19c29574b912796d43fb11";
-        boolean createTable = false;
+        boolean createTable = true;
 //        
 ////
         CommonHelper helper = new CommonHelper();
@@ -43,8 +43,8 @@ public class Main {
         
 
 //        
-        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains,chainl, "yksi.tbl");
-        cracker.crackHash(pisa);
+//        MD5Crack cracker = new MD5Crack("qwertyuiopasdfghjklzxcvbnm", minPw,maxPw, chains,chainl, "yksi.tbl");
+//        cracker.crackHash(pisa);
         
 //        CommonHelper helper = new CommonHelper();
 //        

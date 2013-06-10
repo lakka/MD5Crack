@@ -121,6 +121,7 @@ public class MD5Crack {
             byte pwLength = (byte) endpoint.getBytes().length;
             byte[] currentHash;
             for (int i = 0; i < chainLength; i++) {
+                // this line is ugly and costs a lot
                 currentHash = md.digest(helper.bytesToString(currentPlaintext.getBytes(), charset).getBytes());
 
                 if (helper.equalBytes(hash, currentHash)) {

@@ -4,6 +4,7 @@ import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.CommonHelper;
 import helpers.UIHelper;
+import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.security.*;
 import java.util.Random;
@@ -59,7 +60,7 @@ public class TableCreator {
      * @return true, if table generation was successful
      */
     public boolean createTable() {  
-        DataOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
+        BufferedOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
         uihelper.printTableGenerationStartStats();
 
         int keyspaceID = 0;

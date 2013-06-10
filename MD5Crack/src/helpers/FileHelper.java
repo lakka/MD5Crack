@@ -3,6 +3,7 @@ package helpers;
 import hashtable.Bytes;
 import hashtable.HashTable;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -24,12 +25,12 @@ public class FileHelper {
      *
      * @return null, if table creation failed
      */
-    public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
+    public BufferedOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
         File file = new File(charsetLength + "-" + minPwLength + "-" + maxPwLength + "-" + chainsPerTable + "-" + chainLength + ".tbl");
-        DataOutputStream dos;
+        BufferedOutputStream dos;
         try {
-            dos = new DataOutputStream(new FileOutputStream(file));
+            dos = new BufferedOutputStream(new FileOutputStream(file));
         } catch (Exception e) {
             uihelper.writeError();
             return null;
@@ -45,7 +46,7 @@ public class FileHelper {
      * @param startingPoint chain starting point
      * @param endpoint chain endpoint
      */
-    public void writeToFile(DataOutputStream dos, byte[] startingPoint, byte[] endpoint) {
+    public void writeToFile(BufferedOutputStream dos, byte[] startingPoint, byte[] endpoint) {
         try {
             dos.write(startingPoint);
             dos.write(endpoint);
@@ -59,7 +60,7 @@ public class FileHelper {
      *
      * @param dos
      */
-    public void closeFile(DataOutputStream dos) {
+    public void closeFile(BufferedOutputStream dos) {
         try {
             dos.close();
         } catch (Exception e) {
