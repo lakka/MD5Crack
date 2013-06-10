@@ -6,7 +6,7 @@ import helpers.CommonHelper;
 import helpers.FileHelper;
 import helpers.Reductor;
 import helpers.UIHelper;
-import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.security.MessageDigest;
 
 /**
@@ -49,7 +49,7 @@ public class MD5Crack {
         md = helper.getMD5digester();
         
         // read table to memory
-        DataInputStream dis = file.openFile(filename);
+        BufferedInputStream dis = file.openFile(filename);
         table = file.readTable(dis, chainsPerTable, minPwLength, maxPwLength);
         
     }
@@ -62,7 +62,7 @@ public class MD5Crack {
      */
     public boolean crackHash(String hashString) {   
 
-        byte[] hash = helper.hexStringToByteArray(hashString);
+        final byte[] hash = helper.hexStringToByteArray(hashString);
         
         HashTable foundEndpoints = searchEndpoints(hash, table);
         uihelper.printEndpointCount(foundEndpoints.size());

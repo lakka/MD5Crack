@@ -2,6 +2,7 @@ package helpers;
 
 import hashtable.Bytes;
 import hashtable.HashTable;
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -15,8 +16,9 @@ import java.io.FileOutputStream;
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
 public class FileHelper {
+
     private UIHelper uihelper = new UIHelper();
-    
+
     /**
      * Creates a new table file
      *
@@ -24,7 +26,7 @@ public class FileHelper {
      */
     public DataOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
 
-        File file = new File(charsetLength+"-"+minPwLength+"-"+maxPwLength+"-"+chainsPerTable+"-"+chainLength+".tbl");
+        File file = new File(charsetLength + "-" + minPwLength + "-" + maxPwLength + "-" + chainsPerTable + "-" + chainLength + ".tbl");
         DataOutputStream dos;
         try {
             dos = new DataOutputStream(new FileOutputStream(file));
@@ -67,15 +69,15 @@ public class FileHelper {
 
     /**
      * Opens a file for reading.
-     * 
+     *
      * @param filename file to open
      * @return DataInputStream handle for file
      */
-    public DataInputStream openFile(String filename) {
+    public BufferedInputStream openFile(String filename) {
         File file = new File(filename);
-        DataInputStream dis;
+        BufferedInputStream dis;
         try {
-            dis = new DataInputStream(new FileInputStream(file));
+            dis = new BufferedInputStream(new FileInputStream(file));
         } catch (Exception e) {
             uihelper.readError();
             return null;
@@ -86,28 +88,43 @@ public class FileHelper {
 
     /**
      * Reads a previously opened table file into a hashmap.
+     *
      * @param dis handle for file
      * @param pwLength password length
      * @return rainbow table
      */
-    public HashTable readTable(DataInputStream dis, int chainsPerTable, int minPwLength, int maxPwLength) {
+    public HashTable readTable(BufferedInputStream dis, int chainsPerTable, int minPwLength, int maxPwLength) {
 
-        HashTable table = new HashTable(chainsPerTable/5, minPwLength, maxPwLength);
+        HashTable table = new HashTable(chainsPerTable / 5, minPwLength, maxPwLength);
         int i = 0;
-        
+
+        int availableIterations = 0;
+        try {
+            availableIterations = dis.available();
+        } catch (Exception e) {
+        };
         uihelper.startFileRead();
-        
         while (true) {
             int pwLength = i % (maxPwLength - minPwLength + 1) + minPwLength;
             byte[] startingPoint = new byte[pwLength];
             byte[] endpoint = new byte[pwLength];
+
             try {
-                
-                dis.readFully(startingPoint);
-                dis.readFully(endpoint);
-                Bytes bytese = new Bytes(endpoint);
-                Bytes bytess = new Bytes(startingPoint);
-                table.insert(bytese, bytess);
+
+                // this block is here to prevent continuous polling of available()
+                availableIterations -= (pwLength * 2);
+                if (availableIterations < 50) {
+                    if (dis.available() < startingPoint.length + endpoint.length) {
+                        break;
+                    }
+                }
+
+
+                dis.read(startingPoint);
+                dis.read(endpoint);
+//                dis.readFully(startingPoint);
+//                dis.readFully(endpoint);
+                table.insert(new Bytes(endpoint), new Bytes(startingPoint));
                 i++;
             } catch (EOFException e) {
                 uihelper.endFileRead(i);
@@ -118,8 +135,11 @@ public class FileHelper {
             }
 
         }
+        uihelper.endFileRead(i);
+        return table;
 
 
     }
+
 
 }

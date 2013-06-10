@@ -18,11 +18,11 @@ public class CommonHelper {
      * @return plaintext of the byte array
      */
     public String bytesToString(byte[] bytes, String charset) {
-        StringBuilder sb = new StringBuilder();
+        String result = "";
         for (int j = 0; j < bytes.length; j++) {
-            sb.append(charset.charAt(bytes[j] % charset.length()));
+            result += charset.charAt(bytes[j] % charset.length());
         }
-        return sb.toString();
+        return result;
     }
 
     /**
