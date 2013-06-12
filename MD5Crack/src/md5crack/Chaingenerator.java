@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
-public class Chain extends Thread {
+public class Chaingenerator extends Thread {
 
     private BufferedOutputStream bos;
     private byte pwLength;
@@ -27,7 +27,7 @@ public class Chain extends Thread {
     private final BlockingQueue<EndAndStartpoint> queue;
     private int nr;
 
-    public Chain(BufferedOutputStream bos, byte pwLength, int chainLength, MessageDigest md, Reductor rf, FileHelper file, int chains, Random random, String charset, BlockingQueue<EndAndStartpoint> outputQueue,
+    public Chaingenerator(BufferedOutputStream bos, byte pwLength, int chainLength, MessageDigest md, Reductor rf, FileHelper file, int chains, Random random, String charset, BlockingQueue<EndAndStartpoint> outputQueue,
             int threadnr) {
         this.bos = bos;
         this.pwLength = pwLength;
@@ -78,8 +78,9 @@ int a = 0;
         startingPoint = new byte[pwLength];
         random.nextBytes(startingPoint);
 
+
         for (int a = 0; a < startingPoint.length; a++) {
-            startingPoint[a] = (byte) (Math.abs(startingPoint[a] % charset.length()));
+            startingPoint[a] = (byte) (Math.abs(startingPoint[a]) % charset.length());
         }
         return startingPoint;
     }

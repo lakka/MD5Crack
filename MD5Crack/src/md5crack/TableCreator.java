@@ -22,7 +22,6 @@ public class TableCreator {
     private int maxPwLength;
     private int chainsPerTable;
     private int chainLength;
-    private Random random;
     private Reductor rf;
     private CommonHelper helper;
     private UIHelper uihelper;
@@ -43,14 +42,14 @@ public class TableCreator {
         this.maxPwLength = maxPwLength;
         this.chainsPerTable = chainsPerTable;
         this.chainLength = chainLength;
-        
-        random = new Random(System.currentTimeMillis());
+
+
         rf = new Reductor(charset, minPwLength, maxPwLength);
         file = new FileHelper();
         helper = new CommonHelper();
         uihelper = new UIHelper();
         md = helper.getMD5digester();
-        
+
 
     }
 
@@ -60,36 +59,39 @@ public class TableCreator {
      *
      * @return true, if table generation was successful
      */
-    public boolean createTable() {  
+    public boolean createTable() {
         BufferedOutputStream dos = file.createTableFile(charset.length(), minPwLength, maxPwLength, chainsPerTable, chainLength);
         uihelper.printTableGenerationStartStats();
 
         int keyspaceID = 0;
         int[] keyspaceRatio = helper.calculateKeyspaceRatios(charset, minPwLength, maxPwLength, chainsPerTable);
         // generate chains
+        
+        int cores = Runtime.getRuntime().availableProcessors();
         BlockingQueue<EndAndStartpoint> queue = new LinkedBlockingQueue<>();
-        int chains = chainsPerTable/4;
-        Chain[] chain = new Chain[4];
-        for (int i = 0; i < 4; i++) {
-            chain[i] = new Chain(dos, (byte) minPwLength, chainLength, md, rf, file,chains,new Random(System.currentTimeMillis()),charset, queue, i);
+        int chains = chainsPerTable / cores;
+        Chaingenerator[] chain = new Chaingenerator[cores];
+        for (int i = 0; i < cores; i++) {
+            chain[i] = new Chaingenerator(dos, (byte) minPwLength, chainLength, md, rf, file, chains, new Random(System.currentTimeMillis()), charset, queue, i);
             chain[i].start();
         }
-        
-        while(chain[0].isAlive() || chain[1].isAlive() || chain[2].isAlive() || chain[3].isAlive()) {
-            if(queue.isEmpty()) {
+
+        while (someThreadsAreAlive(chain)) {
+            if (queue.isEmpty()) {
                 try {
-                Thread.sleep(100);
+                    Thread.sleep(100);
                 } catch (Exception e) {
-                    
                 }
             } else {
-                while(!queue.isEmpty()) {
+                while (!queue.isEmpty()) {
                     EndAndStartpoint eas = queue.poll();
-                    file.writeToFile(dos,eas.getStartingPoint(), eas.getEndpoint());
+                    file.writeToFile(dos, eas.getStartingPoint(), eas.getEndpoint());
                 }
             }
         }
-        
+
+
+
 //        for (int i = 0; i < chainsPerTable; i++) {
 //            byte pwLength = (byte)(keyspaceID + minPwLength);
 //            
@@ -117,10 +119,19 @@ public class TableCreator {
 //            }
 //        }
 
-        uihelper.printTableGenerationProgress(chainsPerTable, chainsPerTable);
+        uihelper.done();
 
         file.closeFile(dos);
         return true;
+    }
+
+    private boolean someThreadsAreAlive(Chaingenerator[] chains) {
+        for (int i = 0; i < chains.length; i++) {
+            if (chains[i].isAlive()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -140,8 +151,9 @@ public class TableCreator {
     }
 
     /**
-     * Loops each column with different reducing function to produce an endpoint.
-     * 
+     * Loops each column with different reducing function to produce an
+     * endpoint.
+     *
      * @param md
      * @param currentEndpoint
      * @param rf
@@ -158,5 +170,9 @@ public class TableCreator {
             currentEndpoint = rf.reduce(hash, j, pwLength);
         }
         return currentEndpoint;
+    }
+    
+    public String getTableFilename() {
+        return file.getFilename();
     }
 }

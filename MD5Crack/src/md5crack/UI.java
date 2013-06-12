@@ -14,7 +14,7 @@ public class UI {
     private CommonHelper helper = new CommonHelper();
 
     /**
-     * Ask details from user and either start generating a new table or cracking a hash/hashes.
+     * Ask details from user and either start generating a new table or cracking a hashes.
      */
     public void start() {
         int mode = askMode();
@@ -31,8 +31,11 @@ public class UI {
         int minPw = askInteger("Minimum password length: ");
         int maxPw = askInteger("Maximum password length: ");
         System.out.println();
-        System.out.println("Keyspace: "+helper.calculateKeyspace(charset, minPw, maxPw));
+        long keyspace = helper.calculateKeyspace(charset, minPw, maxPw);
+        System.out.println("Keyspace: "+keyspace);
+        System.out.println("Hint: "+keyspace/4);
         int chainsPerTable = askInteger("Chains per table: ");
+        System.out.println("Hint: "+(keyspace/4)/200);
         int chainLength = askInteger("Chain length: ");
         System.out.println();
 
@@ -40,14 +43,9 @@ public class UI {
             System.out.println("Chains x chain length: "+(long)chainsPerTable*chainLength + " Good luck!");
             TableCreator tc = new TableCreator(charset, minPw, maxPw, chainsPerTable, chainLength);
             tc.createTable();
+            startCrack(charset, minPw, maxPw, chainsPerTable, chainLength, tc.getTableFilename());
         } else if (mode == 2) {
-            System.out.println("Enter hash to start cracking, or press enter to quit.");
-            String hash = askHash();
-            MD5Crack cracker = new MD5Crack(charset, minPw, maxPw, chainsPerTable, chainLength, filename);
-            while (hash != null) {
-                cracker.crackHash(hash);
-                hash = askHash();
-            }
+            startCrack(charset, minPw, maxPw, chainsPerTable, chainLength, filename);
         }
 
     }
@@ -163,5 +161,15 @@ public class UI {
             }
         }
         return hash;
+    }
+
+    private void startCrack(String charset, int minPw, int maxPw, int chainsPerTable, int chainLength, String filename) {
+        MD5Crack cracker = new MD5Crack(charset, minPw, maxPw, chainsPerTable, chainLength, filename);
+        System.out.println("\nEnter hash to start cracking, or press enter to quit.");
+        String hash = askHash();
+        while (hash != null) {
+            cracker.crackHash(hash);
+            hash = askHash();
+        }
     }
 }

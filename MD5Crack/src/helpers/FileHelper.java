@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 public class FileHelper {
 
     private UIHelper uihelper = new UIHelper();
+    private String filename;
 
     /**
      * Creates a new table file
@@ -26,8 +27,8 @@ public class FileHelper {
      * @return null, if table creation failed
      */
     public BufferedOutputStream createTableFile(int charsetLength, int minPwLength, int maxPwLength, int chainsPerTable, int chainLength) {
-
-        File file = new File(charsetLength + "-" + minPwLength + "-" + maxPwLength + "-" + chainsPerTable + "-" + chainLength + ".tbl");
+        filename = charsetLength + "-" + minPwLength + "-" + maxPwLength + "-" + chainsPerTable + "-" + chainLength + ".tbl";
+        File file = new File(filename);
         BufferedOutputStream dos;
         try {
             dos = new BufferedOutputStream(new FileOutputStream(file));
@@ -141,6 +142,10 @@ public class FileHelper {
         return table;
 
 
+    }
+    
+    public String getFilename() {
+        return filename;
     }
 
 
