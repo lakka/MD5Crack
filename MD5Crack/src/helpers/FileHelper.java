@@ -51,7 +51,8 @@ public class FileHelper {
             dos.write(startingPoint);
             dos.write(endpoint);
         } catch (Exception e) {
-            uihelper.writeError();
+//            uihelper.writeError();
+            e.printStackTrace();
         }
     }
 

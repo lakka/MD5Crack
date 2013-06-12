@@ -5,9 +5,10 @@ import helpers.Reductor;
 import helpers.CommonHelper;
 import helpers.UIHelper;
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.security.*;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A class for generating rainbow tables and saving them into a file.
@@ -66,25 +67,55 @@ public class TableCreator {
         int keyspaceID = 0;
         int[] keyspaceRatio = helper.calculateKeyspaceRatios(charset, minPwLength, maxPwLength, chainsPerTable);
         // generate chains
-        for (int i = 0; i < chainsPerTable; i++) {
-            byte pwLength = (byte)(keyspaceID + minPwLength);
-            
-            byte[] startingPoint = createRandomStartingPoint(random, pwLength);
-
-            byte[] endpoint = calculateChain(startingPoint, pwLength);
-            
-            // change keyspace when keyspace size is exceeded
-            if(i > keyspaceRatio[keyspaceID] && keyspaceID < keyspaceRatio.length-1) {
-                keyspaceID++;
-            }
-
-            file.writeToFile(dos, startingPoint, endpoint);
-
-            // print progress
-            if (i != 0 && i % (chainsPerTable / 20) == 0) {
-                uihelper.printTableGenerationProgress(i, chainsPerTable);
+        BlockingQueue<EndAndStartpoint> queue = new LinkedBlockingQueue<>();
+        int chains = chainsPerTable/4;
+        Chain[] chain = new Chain[4];
+        for (int i = 0; i < 4; i++) {
+            chain[i] = new Chain(dos, (byte) minPwLength, chainLength, md, rf, file,chains,new Random(System.currentTimeMillis()),charset, queue, i);
+            chain[i].start();
+        }
+        
+        while(chain[0].isAlive() || chain[1].isAlive() || chain[2].isAlive() || chain[3].isAlive()) {
+            if(queue.isEmpty()) {
+                try {
+                Thread.sleep(100);
+                } catch (Exception e) {
+                    
+                }
+            } else {
+                while(!queue.isEmpty()) {
+                    EndAndStartpoint eas = queue.poll();
+                    file.writeToFile(dos,eas.getStartingPoint(), eas.getEndpoint());
+                }
             }
         }
+        
+//        for (int i = 0; i < chainsPerTable; i++) {
+//            byte pwLength = (byte)(keyspaceID + minPwLength);
+//            
+//            byte[] startingPoint = createRandomStartingPoint(random, pwLength);
+//
+//
+//            
+// 
+////            file.writeToFile(dos, startingPoint, endpoint);
+//
+//            
+//            
+////            byte[] endpoint = calculateChain(startingPoint, pwLength);
+//            
+//            // change keyspace when keyspace size is exceeded
+//            if(i > keyspaceRatio[keyspaceID] && keyspaceID < keyspaceRatio.length-1) {
+//                keyspaceID++;
+//            }
+//
+//            
+//
+//            // print progress
+//            if (i != 0 && i % (chainsPerTable / 20) == 0) {
+//                uihelper.printTableGenerationProgress(i, chainsPerTable);
+//            }
+//        }
 
         uihelper.printTableGenerationProgress(chainsPerTable, chainsPerTable);
 
