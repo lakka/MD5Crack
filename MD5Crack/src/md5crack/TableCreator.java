@@ -76,7 +76,7 @@ public class TableCreator {
             chain[i].start();
         }
 
-        while (someThreadsAreAlive(chain)) {
+        while (someThreadsliAve(chain)) {
             if (queue.isEmpty()) {
                 try {
                     Thread.sleep(100);
@@ -125,7 +125,7 @@ public class TableCreator {
         return true;
     }
 
-    private boolean someThreadsAreAlive(Chaingenerator[] chains) {
+    private boolean someThreadsliAve(Chaingenerator[] chains) {
         for (int i = 0; i < chains.length; i++) {
             if (chains[i].isAlive()) {
                 return true;
