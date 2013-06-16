@@ -19,7 +19,9 @@ The program contains following packages:
 \item[md5crack] Classes used for creating rainbow tables and cracking hashes
 \end{description}
 
-The two most important classes of my project are TableCreator and MD5Crack, the first one generates rainbow tables, and the latter one cracks hashes.
+The three most important classes of my project are TableCreator, MD5Crack and Reductor (a helper class), the first one generates rainbow tables, and the latter one cracks hashes, and Reductor is used by both to reduce a hash to a password.
+
+All input/output stuff is done in the helper classes or in the class UI.
 
 For a more detailed documentation of the classes, refer to the javadoc at: \url{http://www.cs.helsinki.fi/u/laka/tiralabra/javadoc/}
 
