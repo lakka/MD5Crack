@@ -5,4 +5,4 @@ The program has also a hash table implementation.
 
 For more info on rainbow tables, check http://en.wikipedia.org/wiki/Rainbow_table and http://lasec.epfl.ch/pub/lasec/doc/Oech03.pdf
 
-NOTICE! This program should not be used for actual cracking, since it has no multithreading and no support for large files. Turn to rcrack instead.
+NOTICE! This program should not be used for actual cracking, since it has no support for large files. Turn to rcrack instead.
