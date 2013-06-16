@@ -35,7 +35,7 @@ public class UI {
         System.out.println("Keyspace: "+keyspace);
         System.out.println("Hint: "+keyspace/4);
         int chainsPerTable = askInteger("Chains per table: ");
-        System.out.println("Hint: "+(keyspace/4)/200);
+        System.out.println("Hint: "+chainsPerTable/200);
         int chainLength = askInteger("Chain length: ");
         System.out.println();
 
