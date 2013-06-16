@@ -2,7 +2,7 @@ package md5crack;
 
 /**
  *
- * This class is currently used only for testing/debugging
+ * Starts the UI.
  * 
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */

@@ -27,22 +27,42 @@ public class UIHelper {
         System.out.println(i + "/" + chainsPerTable);
     }
     
+    /**
+     * Printed when starting to read a table.
+     * 
+     */
     public void startFileRead() {
         System.out.print("Reading table file... ");
     }
     
+        /**
+     * Printed when a table file has been read into memory.
+     * 
+     */
     public void endFileRead(int lineCount) {
         System.out.println("read " + lineCount + " lines.");
     }
     
+    /**
+     * All is well.
+     */
     public void done() {
         System.out.println("done.");
     }
     
+    /**
+     * Printed when the hash was successfully cracked.
+     * 
+     * @param plaintext the cracked plaintext
+     */
     public void hashCracked(String plaintext) {
         System.out.println("Hash cracked: "+ plaintext);
     }
     
+    /**
+     * Printed when the hash cracking failed.
+     * 
+     */
     public void crackFailed() {
         System.out.print("Failed to crack the hash :( ");
         int random = new Random().nextInt(5);
@@ -67,19 +87,32 @@ public class UIHelper {
         System.out.println(consolidation);
     }
     
+    /**
+     * Possible chain endpoints that were discovered
+     * @param endpoints 
+     */
     public void printEndpointCount(int endpoints) {
         System.out.println("Possible endpoints: "+endpoints);
     }
     
     // table file error messages
+    /**
+     * Error writing to file
+     */
     public void writeError() {
         System.out.println("Could not write to table file.");
     }
     
+    /**
+     * Error reading from file.
+     */
     public void readError() {
         System.out.println("Could not read table file.");
     }
     
+    /**
+     * Error closing a file.
+     */
     public void closeError() {
         System.out.println("Could not close table file.");
     }

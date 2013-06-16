@@ -4,7 +4,7 @@ import helpers.CommonHelper;
 import java.util.Scanner;
 
 /**
- * User interface class
+ * User interface class. Initializes MD5Crack and/or TableCreator.
  * 
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */

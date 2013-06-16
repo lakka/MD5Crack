@@ -52,4 +52,9 @@ I also tested my program's performance with NetBeans' built-in profiler, and lea
 Other than that, I did some heavy refactoring on classes MD5Crack and TableCreator, and also moved all printing to UIHelper class. In addition to that, I revised the tests for each class and wrote some new ones for the newly created hash table. I also updated the javadoc.
 
 Currently I am very pleased with my creation, and I think it is ready now, regarding the goals of this course. Next I'm going to ponder how to implement multithreading to table creation, and how to make my program support large table files (meaning files that don't fit in the RAM). I'm also going to look for other parts of the code which I could optimize.
+
+\section*{Week 5}
+This week I mostly spent time trying to figure out how threading actually works, since I have zero experience in that area. After reading the Java API's examples a few times and after asking a few questions from a friend of mine familiar with multithreading, I finally got some crude multithreading implemented in the branch 'threaded', where TableCreator uses the thread subclass Chain to calculate chains to the rainbow table. MD5Crack doesn't use multithreading. However, I didn't have the time to implement passwords of varying lengths for the threaded version, so I had to leave the threading out of the master branch.
+
+Other than that, I've been mostly coding my software to be ready for the demo. This includes testing the program on Ubuntu and making some changes to the UI. I also went through the documentation and javadoc, and checked for errors and insufficiencies.
 \end{document}
