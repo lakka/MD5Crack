@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 
 /**
+ * A class for looping hash table keys/values.
  *
  * @author Lauri Kangassalo / lauri.kangassalo@helsinki.fi
  */
